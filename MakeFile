@@ -1,0 +1,16 @@
+# Define source directory
+SRC_DIR := src
+
+# List all .cpp files within the source directory and its subdirectories
+SRCS := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp)
+
+# Include directories for header files
+INCLUDE_DIRS := -I$(SRC_DIR)/utils/include
+
+all: compile link
+
+compile:
+	g++ $(INCLUDE_DIRS) $(SRCS) -c
+
+link:
+	g++ *.o -o main -L$(SRC_DIR)/utils/lib -lsfml-graphics -lsfml-window -lsfml-system
