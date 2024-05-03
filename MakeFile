@@ -1,16 +1,19 @@
 # Define source directory
 SRC_DIR := src
 
+# Recursive wildcard function to find all .cpp files in a directory and its subdirectories
+rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
 # List all .cpp files within the source directory and its subdirectories
-SRCS := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp)
+SRCS := $(call rwildcard,$(SRC_DIR)/,*.cpp)
 
 # Include directories for header files
-INCLUDE_DIRS := -I$(SRC_DIR)/utils/include
+INCLUDE_DIRS := -I$(SRC_DIR)/utils/include -I$(SRC_DIR)/Session -I$(SRC_DIR)/Racetrack -I$(SRC_DIR)/Game
 
 all: compile link
 
 compile:
-	g++ $(INCLUDE_DIRS) $(SRCS) -c
+	g++ -Wall $(INCLUDE_DIRS) $(SRCS) -c
 
 link:
 	g++ *.o -o main -L$(SRC_DIR)/utils/lib -lsfml-graphics -lsfml-window -lsfml-system
