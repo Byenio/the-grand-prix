@@ -8,6 +8,9 @@ class Car
   std::string name;
 
 public:
-  Car(int id, std::string name);
+  Car(const int id, const std::string name);
   ~Car();
+
+  int getId() const;
+  std::string getName() const;
 };

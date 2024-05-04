@@ -5,19 +5,22 @@
 #include <memory>
 
 #include "../CarList/CarList.hpp"
+#include "../Session/Session.hpp"
 #include "../TrackList/TrackList.hpp"
 
 class Game
 {
   sf::RenderWindow *pWindow;
-  std::shared_ptr<TrackList> pTrackList;
-  std::shared_ptr<CarList> pCarList;
+  std::shared_ptr<TrackList> pTracks;
+  std::shared_ptr<CarList> pCars;
+  Session *pSession;
 
 public:
   Game(sf::RenderWindow *pWindow);
   ~Game();
 
-  std::shared_ptr<Track> selectTrack(int id);
+  void startSession(int trackId, int carId);
+  void closeSession();
 
-  void close();
+  void closeGame();
 };

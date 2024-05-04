@@ -8,9 +8,9 @@ class Track
   std::string name;
 
 public:
-  Track(int id, std::string name);
+  Track(const int id, const std::string name);
   ~Track();
 
-  int getId();
-  std::string getName();
+  int getId() const;
+  std::string getName() const;
 };
