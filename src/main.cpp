@@ -11,6 +11,9 @@ int main()
   pGame->startSession(3, 3);
   pGame->closeSession();
 
+  pGame->closeGame();
+  delete pGame;
+
   while (window.isOpen())
   {
     sf::Event event;

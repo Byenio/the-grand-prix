@@ -11,9 +11,9 @@
 class Game
 {
   sf::RenderWindow *pWindow;
-  std::shared_ptr<TrackList> pTracks;
-  std::shared_ptr<CarList> pCars;
-  Session *pSession;
+  std::unique_ptr<TrackList> pTracks;
+  std::unique_ptr<CarList> pCars;
+  std::unique_ptr<Session> pSession;
 
 public:
   Game(sf::RenderWindow *pWindow);

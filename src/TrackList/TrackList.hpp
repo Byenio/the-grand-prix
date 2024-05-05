@@ -15,6 +15,7 @@ public:
   TrackList(const std::string &fileName);
   ~TrackList();
 
+  std::vector<std::shared_ptr<Track>> getTracks() const;
   std::shared_ptr<Track> getTrack(const int id) const;
 
   int size() const;

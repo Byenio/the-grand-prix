@@ -23,6 +23,11 @@ CarList::CarList(const std::string &fileName)
 
 CarList::~CarList(){};
 
+std::vector<std::shared_ptr<Car>> CarList::getCars() const
+{
+  return this->cars;
+}
+
 std::shared_ptr<Car> CarList::getCar(const int id) const
 {
   return this->cars.at(id);

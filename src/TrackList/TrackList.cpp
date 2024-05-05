@@ -14,14 +14,18 @@ TrackList::TrackList(const std::string &fileName)
   while (getline(file, line))
   {
     std::vector<std::string> row = vectorizeLine(line);
-    auto track = std::make_shared<Track>(std::stoi(row[0]), row[1]);
-    this->tracks.push_back(track);
+    this->tracks.push_back(std::make_shared<Track>(std::stoi(row[0]), row[1]));
   }
 
   file.close();
 };
 
 TrackList::~TrackList(){};
+
+std::vector<std::shared_ptr<Track>> TrackList::getTracks() const
+{
+  return this->tracks;
+}
 
 std::shared_ptr<Track> TrackList::getTrack(const int id) const
 {

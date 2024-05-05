@@ -15,6 +15,7 @@ public:
   CarList(const std::string &fileName);
   ~CarList();
 
+  std::vector<std::shared_ptr<Car>> getCars() const;
   std::shared_ptr<Car> getCar(const int id) const;
 
   int size() const;

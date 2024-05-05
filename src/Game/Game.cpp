@@ -3,16 +3,12 @@
 Game::Game(sf::RenderWindow *pWindow) : pWindow(pWindow)
 {
   std::string trackListFile = "src/config/tracklist";
-  auto pTracks = std::make_shared<TrackList>(trackListFile);
-  std::cout << "Successfully initialized tracklist [entries: " << pTracks->size() << "]" << std::endl;
-
-  this->pTracks = pTracks;
+  this->pTracks = std::make_unique<TrackList>(trackListFile);
+  std::cout << "Successfully initialized tracklist [entries: " << this->pTracks->size() << "]" << std::endl;
 
   std::string carListFile = "src/config/carlist";
-  auto pCars = std::make_shared<CarList>(carListFile);
-  std::cout << "Successfully initialized carlist [entries: " << pCars->size() << "]" << std::endl;
-
-  this->pCars = pCars;
+  this->pCars = std::make_unique<CarList>(carListFile);
+  std::cout << "Successfully initialized carlist [entries: " << this->pCars->size() << "]" << std::endl;
 
   std::cout << "Successfully created game" << std::endl;
 };
@@ -24,9 +20,9 @@ void Game::startSession(int trackId, int carId)
   std::shared_ptr<Track> selectedTrack = this->pTracks->getTrack(trackId);
   std::shared_ptr<Car> selectedCar = this->pCars->getCar(carId);
 
-  // auto session = std::make_shared<Session>(0, selectedTrack, selectedCar);
-  Session *session = new Session(0, selectedTrack, selectedCar);
-  this->pSession = session;
+  this->pSession = std::make_unique<Session>(0, selectedTrack, selectedCar);
+  std::cout << "Successfully started session: [" << this->pSession->getTrack()->getName() << ", "
+            << this->pSession->getCar()->getName() << "]" << std::endl;
 };
 
 void Game::closeSession()
@@ -41,7 +37,7 @@ void Game::closeSession()
 
   std::cout << "Successfully closed session" << std::endl;
 
-  delete pSession;
+  this->pSession.reset();
 }
 
 void Game::closeGame()
