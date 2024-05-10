@@ -13,8 +13,8 @@ CarList::CarList(const std::string &fileName)
 
   while (getline(file, line))
   {
-    std::vector<std::string> row = vectorizeLine(line);
-    auto pCar = std::make_shared<Car>(std::stoi(row[0]), row[1]);
+    std::vector<std::string> row = vectorizeLine(line, 3);
+    auto pCar = std::make_shared<Car>(std::stoi(row[0]), row[1], row[2]);
     this->cars.push_back(pCar);
   }
 
@@ -30,7 +30,15 @@ std::vector<std::shared_ptr<Car>> CarList::getCars() const
 
 std::shared_ptr<Car> CarList::getCar(const int id) const
 {
-  return this->cars.at(id);
+  auto it =
+      std::find_if(cars.begin(), cars.end(), [id](const std::shared_ptr<Car> &ptr) { return ptr->getId() == id; });
+
+  if (it != cars.end())
+  {
+    return *it;
+  }
+
+  return nullptr;
 }
 
 int CarList::size() const

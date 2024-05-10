@@ -25,6 +25,16 @@ void Game::startSession(int trackId, int carId)
             << this->pSession->getCar()->getName() << "]" << std::endl;
 };
 
+std::shared_ptr<Session> Game::getSession()
+{
+  return this->pSession;
+}
+
+std::shared_ptr<Car> Game::getCar()
+{
+  return this->pSession->getCar();
+}
+
 void Game::closeSession()
 {
   std::ofstream file;

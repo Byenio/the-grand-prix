@@ -1,6 +1,6 @@
 #include "functions.hpp"
 
-std::vector<std::string> vectorizeLine(const std::string &line)
+std::vector<std::string> vectorizeLine(const std::string &line, const int cols)
 {
   char delimiter = ',';
   std::stringstream ssLine(line);
@@ -11,7 +11,8 @@ std::vector<std::string> vectorizeLine(const std::string &line)
   while (getline(ssLine, temp, delimiter))
   {
     row.push_back(temp);
-    i ^= 1;
+    i += 1;
+    i = i % cols;
   };
 
   return row;
