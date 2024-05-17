@@ -11,6 +11,10 @@ Car::Car(const int id, const std::string name, const std::string texturePath)
   }
 
   sprite->setTexture(*texture);
+  sf::FloatRect bounds = sprite->getLocalBounds();
+  sprite->setOrigin(bounds.width / 2, bounds.height / 2);
+
+  this->physics = std::make_shared<Physics>();
 };
 
 Car::~Car(){};
@@ -27,15 +31,77 @@ std::string Car::getName() const
 
 std::shared_ptr<sf::Sprite> Car::getSprite() const
 {
-  return sprite;
+  return this->sprite;
 }
 
-void Car::moveForward()
+std::shared_ptr<Physics> Car::getPhysics() const
 {
-  this->sprite->setPosition(sprite->getPosition().x, sprite->getPosition().y - 0.1f);
+  return this->physics;
 }
 
-void Car::moveBackward()
+// void Car::moveForward()
+// {
+//   const float speed = this->getSpeed();
+//   const float angle = this->sprite->getRotation() * M_PI / 180;
+//   sf::Vector2f movement((speed * sin(angle)), (-speed * cos(angle)));
+//   this->sprite->move(movement);
+// }
+
+// void Car::moveBackward()
+// {
+//   const float speed = this->getSpeed();
+//   const float angle = this->sprite->getRotation() * M_PI / 180;
+//   sf::Vector2f movement((speed * sin(angle)), (-speed * cos(angle)));
+//   this->sprite->move(movement);
+// }
+
+void Car::update()
 {
-  this->sprite->setPosition(sprite->getPosition().x, sprite->getPosition().y + 0.1f);
+  const float speed = this->physics->getSpeed();
+  const float angleInRad = this->sprite->getRotation() * 0.0174532925;
+  sf::Vector2f movement(speed * sin(angleInRad), -speed * cos(angleInRad));
+
+  this->sprite->move(movement);
+  this->sprite->rotate(this->physics->getSpeed() * this->physics->getSteeringAngle());
+}
+
+void Car::accelerate()
+{
+  this->physics->setAcceleration(this->acceleration - this->dragAcceleration);
+  this->update();
+};
+
+void Car::decelerate()
+{
+  if (this->physics->getSpeed() != 0)
+  {
+    this->physics->setAcceleration(this->dragAcceleration * this->physics->getSign());
+  }
+  this->update();
+}
+
+void Car::brake()
+{
+  this->physics->setAcceleration((this->brakeAcceleration + this->dragAcceleration) * this->physics->getSign());
+  this->update();
+}
+
+void Car::reverse()
+{
+  this->physics->setAcceleration(this->reverseAcceleration - this->dragAcceleration);
+  this->update();
+}
+
+void Car::turnLeft()
+{
+  this->physics->setSteeringAngle(-this->steeringAngle);
+  this->decelerate();
+  this->update();
+}
+
+void Car::turnRight()
+{
+  this->physics->setSteeringAngle(this->steeringAngle);
+  this->decelerate();
+  this->update();
 }

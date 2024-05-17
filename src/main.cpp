@@ -11,6 +11,15 @@ int main()
   int centerX = (window.getSize().x - textureSize * scale) / 2;
   int centerY = (window.getSize().y - textureSize * scale) / 2;
 
+  sf::Font font;
+  font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
+
+  sf::Text speed;
+  speed.setFont(font);
+  speed.setCharacterSize(16);
+  speed.setFillColor(sf::Color::Black);
+  speed.setPosition(window.getSize().x - 160, window.getSize().y - 32);
+
   Game *pGame = new Game(&window);
 
   pGame->startSession(3, 3);
@@ -34,16 +43,62 @@ int main()
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-      pGame->getCar()->moveForward();
+      if (pGame->getCar()->getPhysics()->getSign() > 0)
+      {
+        pGame->getCar()->accelerate();
+      }
+      else
+      {
+        pGame->getCar()->brake();
+      }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-      pGame->getCar()->moveBackward();
+      if (pGame->getCar()->getPhysics()->getSign() > 0)
+      {
+        pGame->getCar()->brake();
+      }
+      else
+      {
+        pGame->getCar()->reverse();
+      }
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+      pGame->getCar()->turnLeft();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+      pGame->getCar()->turnRight();
+    }
+
+    if (noAccelerationKeyPressed())
+    {
+      if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-3f))
+      {
+        pGame->getCar()->decelerate();
+      }
+
+      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-3f))
+      {
+        pGame->getCar()->getPhysics()->setSpeed(0);
+      }
+    }
+
+    if (noSteeringKeyPressed())
+    {
+      pGame->getCar()->getPhysics()->setSteeringAngle(0);
+    }
+
+    std::string speedString = std::to_string(static_cast<int>(pGame->getCar()->getPhysics()->getSpeed() * 100));
+    speed.setString(speedString + " km/h");
 
     window.clear(sf::Color::White);
     window.draw(*pGame->getCar()->getSprite());
+    window.draw(speed);
     window.display();
   }
 

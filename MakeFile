@@ -8,7 +8,7 @@ rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 SRCS := $(call rwildcard,$(SRC_DIR)/,*.cpp)
 
 # Include directories for header files
-INCLUDE_DIRS := -I$(SRC_DIR)/utils/include -I$(SRC_DIR)/Session -I$(SRC_DIR)/Racetrack -I$(SRC_DIR)/Game
+INCLUDE_DIRS := -I$(SRC_DIR)/utils/include -I$(SRC_DIR)/Session -I$(SRC_DIR)/TrackList -I$(SRC_DIR)/Game
 
 all: compile link
 

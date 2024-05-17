@@ -17,3 +17,18 @@ std::vector<std::string> vectorizeLine(const std::string &line, const int cols)
 
   return row;
 };
+
+bool noAccelerationKeyPressed()
+{
+  return (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S));
+}
+
+bool noSteeringKeyPressed()
+{
+  return (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D));
+}
+
+bool isZero(float value, float epsilon)
+{
+  return std::abs(value) < epsilon;
+}
