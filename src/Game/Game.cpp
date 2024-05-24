@@ -41,7 +41,7 @@ void Game::closeSession()
   file.open("src/config/sessions", std::ios_base::app);
 
   file << this->pSession->getId() << "," << this->pSession->getTrack()->getName() << ","
-       << this->pSession->getCar()->getName();
+       << this->pSession->getCar()->getName() << std::endl;
 
   file.close();
 
