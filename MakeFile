@@ -1,5 +1,6 @@
 # Define source directory
 SRC_DIR := src
+BUILD_DIR := build
 
 # Recursive wildcard function to find all .cpp files in a directory and its subdirectories
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))

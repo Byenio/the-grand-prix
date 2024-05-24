@@ -13,7 +13,7 @@ TrackList::TrackList(const std::string &fileName)
 
   while (getline(file, line))
   {
-    std::vector<std::string> row = vectorizeLine(line, 2);
+    std::vector<std::string> row = fileLineToVector(line, 2);
     this->tracks.push_back(std::make_shared<Track>(std::stoi(row[0]), row[1]));
   }
 

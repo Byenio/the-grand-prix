@@ -1,6 +1,6 @@
 #include "Car.hpp"
 
-Car::Car(const int id, const std::string name, const std::string texturePath)
+Car::Car(const int id, const std::string name, const std::string texturePath, const int horsepower)
     : id(id), name(name), texture(std::make_shared<sf::Texture>()), sprite(std::make_shared<sf::Sprite>())
 {
   // std::cout << "Successfully created new car: [" << id << "] " <<
@@ -15,6 +15,7 @@ Car::Car(const int id, const std::string name, const std::string texturePath)
   sprite->setOrigin(bounds.width / 2, bounds.height / 2);
 
   this->physics = std::make_shared<Physics>();
+  this->engine = std::make_shared<Engine>(horsepower);
 };
 
 Car::~Car(){};
@@ -34,26 +35,15 @@ std::shared_ptr<sf::Sprite> Car::getSprite() const
   return this->sprite;
 }
 
+std::shared_ptr<Engine> Car::getEngine() const
+{
+  return this->engine;
+}
+
 std::shared_ptr<Physics> Car::getPhysics() const
 {
   return this->physics;
 }
-
-// void Car::moveForward()
-// {
-//   const float speed = this->getSpeed();
-//   const float angle = this->sprite->getRotation() * M_PI / 180;
-//   sf::Vector2f movement((speed * sin(angle)), (-speed * cos(angle)));
-//   this->sprite->move(movement);
-// }
-
-// void Car::moveBackward()
-// {
-//   const float speed = this->getSpeed();
-//   const float angle = this->sprite->getRotation() * M_PI / 180;
-//   sf::Vector2f movement((speed * sin(angle)), (-speed * cos(angle)));
-//   this->sprite->move(movement);
-// }
 
 void Car::update()
 {

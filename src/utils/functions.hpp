@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> vectorizeLine(const std::string &line, const int cols);
+std::vector<std::string> fileLineToVector(const std::string &line, const int cols);
 
 bool noAccelerationKeyPressed();
 bool noSteeringKeyPressed();

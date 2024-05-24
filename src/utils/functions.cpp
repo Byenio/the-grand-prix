@@ -1,6 +1,6 @@
 #include "functions.hpp"
 
-std::vector<std::string> vectorizeLine(const std::string &line, const int cols)
+std::vector<std::string> fileLineToVector(const std::string &line, const int cols)
 {
   char delimiter = ',';
   std::stringstream ssLine(line);

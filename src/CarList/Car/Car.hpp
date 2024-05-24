@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Physics/Engine/Engine.hpp"
 #include "../../Physics/Physics.hpp"
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -18,6 +19,8 @@ class Car
   std::shared_ptr<sf::Texture> texture;
   std::shared_ptr<sf::Sprite> sprite;
 
+  std::shared_ptr<Engine> engine;
+
   std::shared_ptr<Physics> physics;
   float acceleration = .2;
   float dragAcceleration = -.1;
@@ -26,12 +29,15 @@ class Car
   float reverseAcceleration = -.5;
 
 public:
-  Car(const int id, const std::string name, const std::string texturePath);
+  Car(const int id, const std::string name, const std::string texturePath, const int horsepower);
   ~Car();
 
   int getId() const;
   std::string getName() const;
   std::shared_ptr<sf::Sprite> getSprite() const;
+
+  std::shared_ptr<Engine> getEngine() const;
+
   std::shared_ptr<Physics> getPhysics() const;
 
   void accelerate();
