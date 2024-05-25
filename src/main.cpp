@@ -5,6 +5,7 @@
 int main()
 {
   sf::RenderWindow window(sf::VideoMode(1600, 1000), "The Grand Prix");
+  sf::View view = window.getDefaultView();
 
   int scale = 4;
   int textureSize = 64;
@@ -18,7 +19,6 @@ int main()
   speed.setFont(font);
   speed.setCharacterSize(16);
   speed.setFillColor(sf::Color::Black);
-  speed.setPosition(window.getSize().x - 160, window.getSize().y - 32);
 
   Game *pGame = new Game(&window);
 
@@ -96,6 +96,10 @@ int main()
     std::string speedString = std::to_string(static_cast<int>(pGame->getCar()->getPhysics()->getSpeed() * 100));
     speed.setString(speedString + " km/h");
 
+    view.setCenter(pGame->getCar()->getSprite()->getPosition());
+    speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);
+
+    window.setView(view);
     window.clear(sf::Color::White);
     window.draw(*pGame->getCar()->getSprite());
     window.draw(speed);
