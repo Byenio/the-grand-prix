@@ -1,6 +1,6 @@
 #include "Physics.hpp"
 
-Physics::Physics() : speed(0), acceleration(0), steeringAngle(0), sign(1)
+Physics::Physics() : speed(0), acceleration(0), steeringAngle(0), speedSign(1)
 {
 }
 
@@ -16,41 +16,48 @@ float Physics::getSpeed()
   return this->speed;
 }
 
-void Physics::setVelocity(float angleInRad){
-  this->velocity =sf::Vector2f(sin(angleInRad)*speed, -cos(angleInRad)*speed);
+sf::Vector2f Physics::getVelocity()
+{
+  return this->velocity;
 }
 
-
-void Physics::setTractionForce(int power){
-  this->tractionForce = sf::Vector2f(
-    0.7*power,
-    0.7*power);
+void Physics::setVelocity(float angleInRad)
+{
+  this->velocity = sf::Vector2f(sin(angleInRad) * speed, -cos(angleInRad) * speed);
 }
 
-void Physics::setDragForce(){
-  this->dragForce = sf::Vector2f(
-    -0.4257*speed*velocity.x,
-    -0.4257*speed*velocity.y);
+void Physics::setTractionForce(int power, float angleInRad)
+{
+  this->tractionForce = sf::Vector2f(0.7 * power * sin(angleInRad), 0.7 * power * (-cos(angleInRad)));
 }
 
-void Physics::setRollingForce(){
-  this->rollingForce = sf::Vector2f(
-    -0.4257*30*velocity.x,
-    -0.4257*30*velocity.y
-  );
+void Physics::setDragForce()
+{
+  this->dragForce = sf::Vector2f(-0.4257 * speed * velocity.x, 0.4257 * speed * velocity.y);
 }
 
-void Physics::setAcceleration(float acceleration, int power, float angleInRad)
+void Physics::setRollingForce()
+{
+  this->rollingForce = sf::Vector2f(-0.4257 * 30 * speed, 0.4257 * 30 * speed);
+}
+
+void Physics::setAcceleration(int power, float angleInRad)
 {
   setVelocity(angleInRad);
-  setTractionForce(power);
+  setTractionForce(power, angleInRad);
   setDragForce();
   setRollingForce();
-  sf::Vector2f forces = (tractionForce+rollingForce+dragForce);
-  sf::Vector2f accelerationVector = sf::Vector2f(forces.x/900,forces.y/900);
-  this->acceleration = sqrt(accelerationVector.x*accelerationVector.x+accelerationVector.y*accelerationVector.y);
-  this->speed += acceleration;
-  speed >= 0 ? this->sign = 1 : this->sign = -1;
+
+  sf::Vector2f accelerationVector = sf::Vector2f(tractionForce.x / 900, tractionForce.y / 900);
+  sf::Vector2f decelerationVector =
+      sf::Vector2f((rollingForce.x + dragForce.x) / 900, (rollingForce.y + dragForce.y) / 900);
+
+  this->acceleration = sqrt(accelerationVector.x * accelerationVector.x + accelerationVector.y * accelerationVector.y) -
+                       sqrt(decelerationVector.x * decelerationVector.x + decelerationVector.y * decelerationVector.y);
+
+  this->speed += this->acceleration;
+
+  speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
 };
 
 float Physics::getAcceleration()
@@ -60,7 +67,7 @@ float Physics::getAcceleration()
 
 void Physics::setSteeringAngle(float angle)
 {
-  this->steeringAngle = angle * sign;
+  this->steeringAngle = angle * speedSign;
 }
 
 float Physics::getSteeringAngle()
@@ -70,5 +77,5 @@ float Physics::getSteeringAngle()
 
 int Physics::getSign()
 {
-  return this->sign;
+  return this->speedSign;
 }

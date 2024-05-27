@@ -25,7 +25,6 @@ class Car
   std::vector<std::shared_ptr<Tyre>> tyres;
 
   std::shared_ptr<Physics> physics;
-  float acceleration = .2;
   float dragAcceleration = -.1;
   float brakeAcceleration = -2;
   float steeringAngle = .3;
