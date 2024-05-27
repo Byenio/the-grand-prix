@@ -100,10 +100,10 @@ window.setFramerateLimit(60);
 
     std::cout<<pGame->getCar()->getPhysics()->getAcceleration()<<std::endl;
 
-    view.setCenter(pGame->getCar()->getSprite()->getPosition());
-    speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);
+    // view.setCenter(pGame->getCar()->getSprite()->getPosition());
+    // speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);
 
-    window.setView(view);
+    // window.setView(view);
     window.clear(sf::Color::White);
     window.draw(*pGame->getCar()->getSprite());
     window.draw(speed);
