@@ -4,9 +4,10 @@
 
 int main()
 {
+  
   sf::RenderWindow window(sf::VideoMode(1600, 1000), "The Grand Prix");
   sf::View view = window.getDefaultView();
-
+window.setFramerateLimit(60);
   int scale = 4;
   int textureSize = 64;
   int centerX = (window.getSize().x - textureSize * scale) / 2;
@@ -22,7 +23,7 @@ int main()
 
   Game *pGame = new Game(&window);
 
-  pGame->startSession(3, 3);
+  pGame->startSession(3, 1);
 
   pGame->getCar()->getSprite()->setScale(scale, scale);
   pGame->getCar()->getSprite()->setPosition(centerX, centerY);
@@ -77,12 +78,13 @@ int main()
 
     if (noAccelerationKeyPressed())
     {
-      if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-3f))
+      pGame->getCar()->getPhysics()->setTractionForce(0);
+      if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
       {
         pGame->getCar()->decelerate();
       }
 
-      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-3f))
+      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
       {
         pGame->getCar()->getPhysics()->setSpeed(0);
       }
@@ -93,8 +95,10 @@ int main()
       pGame->getCar()->getPhysics()->setSteeringAngle(0);
     }
 
-    std::string speedString = std::to_string(static_cast<int>(pGame->getCar()->getPhysics()->getSpeed() * 100));
+    std::string speedString = std::to_string(static_cast<int>(pGame->getCar()->getPhysics()->getSpeed()*3.6));
     speed.setString(speedString + " km/h");
+
+    std::cout<<pGame->getCar()->getPhysics()->getAcceleration()<<std::endl;
 
     view.setCenter(pGame->getCar()->getSprite()->getPosition());
     speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);

@@ -67,7 +67,7 @@ void Car::update()
 
 void Car::accelerate()
 {
-  this->physics->setAcceleration(this->acceleration - this->dragAcceleration);
+  this->physics->setAcceleration(this->acceleration - this->dragAcceleration, this->engine->getPower(),this->sprite->getRotation()* 0.0174532925);
   this->update();
 };
 
@@ -75,20 +75,20 @@ void Car::decelerate()
 {
   if (this->physics->getSpeed() != 0)
   {
-    this->physics->setAcceleration(this->dragAcceleration * this->physics->getSign());
+    this->physics->setAcceleration(this->dragAcceleration * this->physics->getSign(),0,this->sprite->getRotation()* 0.0174532925);
   }
   this->update();
 }
 
 void Car::brake()
 {
-  this->physics->setAcceleration((this->brakeAcceleration + this->dragAcceleration) * this->physics->getSign());
+  this->physics->setAcceleration((this->brakeAcceleration + this->dragAcceleration) * this->physics->getSign(),-100,this->sprite->getRotation()* 0.0174532925);
   this->update();
 }
 
 void Car::reverse()
 {
-  this->physics->setAcceleration(this->reverseAcceleration - this->dragAcceleration);
+  this->physics->setAcceleration(this->reverseAcceleration - this->dragAcceleration,100,this->sprite->getRotation()* 0.0174532925);
   this->update();
 }
 
