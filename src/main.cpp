@@ -22,7 +22,7 @@ int main()
 
   Game *pGame = new Game(&window);
 
-  pGame->startSession(3, 3);
+  pGame->startSession(3, 4);
 
   pGame->getCar()->getSprite()->setScale(scale, scale);
   pGame->getCar()->getSprite()->setPosition(centerX, centerY);
