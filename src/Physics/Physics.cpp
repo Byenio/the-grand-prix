@@ -33,12 +33,12 @@ void Physics::setTractionForce(int power, float angleInRad)
 
 void Physics::setDragForce()
 {
-  this->dragForce = sf::Vector2f(-0.4257 * speed * velocity.x, 0.4257 * speed * velocity.y);
+  this->dragForce = sf::Vector2f(-1.29 * speed * velocity.x, -1.29 * speed * velocity.y);
 }
 
 void Physics::setRollingForce()
 {
-  this->rollingForce = sf::Vector2f(-0.4257 * 30 * speed, 0.4257 * 30 * speed);
+  this->rollingForce = sf::Vector2f(-1.29 * 30 * speed, -1.29 * 30 * speed);
 }
 
 void Physics::setAcceleration(int power, float angleInRad)
@@ -52,10 +52,11 @@ void Physics::setAcceleration(int power, float angleInRad)
   sf::Vector2f decelerationVector =
       sf::Vector2f((rollingForce.x + dragForce.x) / 900, (rollingForce.y + dragForce.y) / 900);
 
-  this->acceleration = sqrt(accelerationVector.x * accelerationVector.x + accelerationVector.y * accelerationVector.y) -
-                       sqrt(decelerationVector.x * decelerationVector.x + decelerationVector.y * decelerationVector.y);
+  this->acceleration = 
+  sqrt(accelerationVector.x * accelerationVector.x + accelerationVector.y * accelerationVector.y) - 
+  sqrt(decelerationVector.x * decelerationVector.x + decelerationVector.y * decelerationVector.y);
 
-  this->speed += this->acceleration;
+  this->speed += this->acceleration*1.0f/30.0f;
 
   speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
 };
