@@ -1,13 +1,20 @@
+#include "Game.hpp"
+#include "utils/json.hpp"
 #include <SFML/Graphics.hpp>
 
-#include "Game.hpp"
+using json = nlohmann::json;
+
+struct TrackSectors
+{
+  sf::RectangleShape shape;
+  int num;
+};
 
 int main()
 {
-
   sf::RenderWindow window(sf::VideoMode(1600, 1000), "The Grand Prix");
   sf::View view = window.getDefaultView();
-  window.setFramerateLimit(20);
+  window.setFramerateLimit(60);
   int scale = 4;
   int textureSize = 64;
   int centerX = (window.getSize().x - textureSize * scale) / 2;
@@ -23,7 +30,55 @@ int main()
 
   Game *pGame = new Game(&window);
 
-  pGame->startSession(3, 1);
+  pGame->startSession(1, 1);
+
+  json trackModel = pGame->getSession()->getTrackModel();
+
+  std::vector<sf::RectangleShape> trackSegments;
+  std::vector<TrackSectors> trackSectorLines;
+  // track segments generation
+  for (auto &segment : trackModel[0]["shapes"])
+  {
+    float trackScale = 4;
+
+    float width = segment["width"];
+    float height = segment["height"];
+    float x = segment["x"];
+    float y = segment["y"];
+    sf::RectangleShape shape(sf::Vector2f(width * trackScale, height * trackScale));
+    shape.setPosition(sf::Vector2f(x * trackScale, y * trackScale));
+    shape.setFillColor(sf::Color(sf::Color::Red));
+
+    trackSegments.push_back(shape);
+  }
+
+  // track sector lines generation
+  for (auto &sectorLine : trackModel[0]["sectors"])
+  {
+    float trackScale = 4;
+
+    float width = sectorLine["width"];
+    float height = sectorLine["height"];
+    float x = sectorLine["x"];
+    float y = sectorLine["y"];
+    int num = sectorLine["num"];
+    bool isFinishLine = sectorLine["isFinishLine"];
+
+    sf::RectangleShape shape(sf::Vector2f(width * trackScale, height * trackScale));
+    shape.setPosition(sf::Vector2f(x * trackScale, y * trackScale));
+    shape.setFillColor(sf::Color(sf::Color::Black));
+
+    if (isFinishLine)
+    {
+      shape.setFillColor(sf::Color(sf::Color::White));
+    }
+
+    TrackSectors sector = {shape, num};
+
+    trackSectorLines.push_back(sector);
+  }
+
+  int currentSector = 1;
 
   pGame->getCar()->getSprite()->setScale(scale, scale);
   pGame->getCar()->getSprite()->setPosition(centerX, centerY);
@@ -107,6 +162,36 @@ int main()
 
     window.setView(view);
     window.clear(sf::Color::White);
+
+    bool offtrack = true;
+
+    for (auto &segment : trackSegments)
+    {
+      window.draw(segment);
+
+      if (pGame->getCar()->getSprite()->getGlobalBounds().intersects(segment.getGlobalBounds()))
+      {
+        offtrack = false;
+      }
+    }
+
+    if (offtrack)
+    {
+      std::cout << "OFFTRACK" << std::endl;
+    }
+
+    for (auto &sectorLine : trackSectorLines)
+    {
+      window.draw(sectorLine.shape);
+
+      if (pGame->getCar()->getSprite()->getGlobalBounds().intersects(sectorLine.shape.getGlobalBounds()))
+      {
+        currentSector = sectorLine.num;
+      }
+    }
+
+    std::cout << currentSector << std::endl;
+
     window.draw(*pGame->getCar()->getSprite());
     window.draw(speed);
     window.display();

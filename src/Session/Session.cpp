@@ -18,3 +18,15 @@ std::shared_ptr<Car> Session::getCar()
 {
   return this->car;
 }
+
+json Session::getTrackModel()
+{
+
+  std::string fileName = "src/config/tracks/" + std::to_string(track->getId()) + "/track_model.json";
+
+  std::fstream file;
+  file.open(fileName, std::ios::in);
+  json trackModel{json::parse(file)};
+
+  return trackModel;
+}
