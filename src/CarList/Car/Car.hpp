@@ -27,7 +27,7 @@ class Car
   std::shared_ptr<Physics> physics;
   float dragAcceleration = -.1;
   float brakeAcceleration = -2;
-  float steeringAngle = .3;
+  float steeringAngle = .08;
   float reverseAcceleration = -.5;
 
 public:

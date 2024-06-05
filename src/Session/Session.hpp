@@ -2,8 +2,12 @@
 
 #include "../CarList/Car/Car.hpp"
 #include "../TrackList/Track/Track.hpp"
+#include "../utils/json.hpp"
+#include <fstream>
 #include <iostream>
 #include <memory>
+
+using json = nlohmann::json;
 
 class Session
 {
@@ -18,4 +22,6 @@ public:
   int getId();
   std::shared_ptr<Track> getTrack();
   std::shared_ptr<Car> getCar();
+
+  json getTrackModel();
 };
