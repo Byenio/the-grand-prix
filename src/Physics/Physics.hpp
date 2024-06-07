@@ -7,17 +7,21 @@
 
 class Physics
 {
-  float velocityX;
-  float velocityY;
   float tractionForce;
   float dragForce;
   float rollingForce;
   float normalForce;
+
   float speed;
-  float accelerationX = 0;
-  float accelerationY = 0;
+  float velocityX;
+  float velocityY;
+
   float acceleration;
+  float accelerationX;
+  float accelerationY;
+
   float steeringAngle;
+
   int speedSign;
 
 public:
@@ -31,6 +35,7 @@ public:
   void setAcceleration(int power, float angleInRad);
   void setSteeringAngle(float angle);
   void setSpeed();
+  void setSpeed(float speed);
   void setVelocity();
 
   float getSpeed();

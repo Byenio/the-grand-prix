@@ -1,6 +1,8 @@
 #include "Physics.hpp"
 
-Physics::Physics() : speed(0), acceleration(0), steeringAngle(0), speedSign(1)
+Physics::Physics()
+    : speed(0), velocityX(0), velocityY(0), acceleration(0), accelerationX(0), accelerationY(0), steeringAngle(0),
+      speedSign(1)
 {
 }
 
@@ -8,8 +10,12 @@ Physics::~Physics(){};
 
 void Physics::setSpeed()
 {
-  std::cout<<velocityX<<" "<<velocityY<<" "<<std::endl;
   this->speed = sqrt(this->velocityX * this->velocityX + this->velocityY * this->velocityY);
+}
+
+void Physics::setSpeed(float speed)
+{
+  this->speed = 0;
 }
 
 float Physics::getSpeed()
@@ -30,12 +36,14 @@ void Physics::setVelocity()
 
 void Physics::setTractionForce(int power)
 {
-  if (this->speed == 0){
-    this->tractionForce = 0;
-  } 
-  else{
-    this->tractionForce = (0.9*power) / speed;
-  } 
+  if (this->speed == 0)
+  {
+    this->tractionForce = (0.9 * power);
+  }
+  else
+  {
+    this->tractionForce = (0.9 * power) / speed;
+  }
 }
 
 void Physics::setDragForce()
@@ -45,38 +53,35 @@ void Physics::setDragForce()
 
 void Physics::setRollingForce()
 {
-  if(this->speed == 0){
-    this->rollingForce = 0;
-  }else{
-    this->rollingForce = 0.015 * normalForce; 
+  {
+    this->rollingForce = 0.015 * normalForce;
   }
 }
 
-void Physics::setNormalForce(){
+void Physics::setNormalForce()
+{
   this->normalForce = 900 * 9.81 + 15000;
 }
 
 void Physics::setAcceleration(int power, float angleInRad)
 {
-  setVelocity();
-  setSpeed();
   setTractionForce(power);
   setDragForce();
   setNormalForce();
   setRollingForce();
-  this->acceleration = (tractionForce - dragForce - rollingForce)/900;
-  //std::cout << acceleration << std::endl;
-  //std::cout << tractionForce << std::endl;
-  //std::cout << rollingForce << std::endl;
-  std::cout << dragForce << std::endl;
-  //std::cout << angleInRad << std::endl;
+  this->acceleration = (tractionForce - dragForce - rollingForce) / 900;
+  std::cout << "a " << acceleration << std::endl;
+  std::cout << "t " << tractionForce << std::endl;
+  std::cout << "r " << rollingForce << std::endl;
+  std::cout << "d " << dragForce << std::endl;
 
-  this->accelerationX = acceleration * cos(angleInRad);
-  this->accelerationY = acceleration * sin(angleInRad);
-
-  
+  this->accelerationX = acceleration * sin(angleInRad);
+  this->accelerationY = acceleration * -cos(angleInRad);
 
   speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
+
+  setVelocity();
+  setSpeed();
 };
 
 float Physics::getAcceleration()

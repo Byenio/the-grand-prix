@@ -140,10 +140,10 @@ int main()
         pGame->getCar()->decelerate();
       }
 
-      // if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
-      // {
-      //   pGame->getCar()->getPhysics()->setSpeed();
-      // }
+      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
+      {
+        pGame->getCar()->getPhysics()->setSpeed(0);
+      }
     }
 
     if (noSteeringKeyPressed())
