@@ -39,7 +39,7 @@ int main()
   // track segments generation
   for (auto &segment : trackModel[0]["shapes"])
   {
-    float trackScale = 4;
+    float trackScale = 100;
 
     float width = segment["width"];
     float height = segment["height"];
@@ -55,7 +55,7 @@ int main()
   // track sector lines generation
   for (auto &sectorLine : trackModel[0]["sectors"])
   {
-    float trackScale = 4;
+    float trackScale = 100;
 
     float width = sectorLine["width"];
     float height = sectorLine["height"];
@@ -81,7 +81,7 @@ int main()
   int currentSector = 1;
 
   pGame->getCar()->getSprite()->setScale(scale, scale);
-  pGame->getCar()->getSprite()->setPosition(centerX, centerY);
+  pGame->getCar()->getSprite()->setPosition(7200, 3300);
 
   // pGame->closeSession();
   // pGame->closeGame();
