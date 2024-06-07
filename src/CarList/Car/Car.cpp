@@ -57,51 +57,62 @@ std::shared_ptr<Physics> Car::getPhysics() const
 
 void Car::update()
 {
-  const float speed = this->physics->getSpeed();
-  const float angleInRad = this->sprite->getRotation() * 0.0174532925;
-  sf::Vector2f movement(speed * sin(angleInRad), -speed * cos(angleInRad));
+  // const float speed = this->physics->getSpeed();
+  // const float angleInRad = this->sprite->getRotation() * 0.0174532925;
+  // sf::Vector2f movement(speed * sin(angleInRad), -speed * cos(angleInRad));
 
-  this->sprite->move(this->physics->getVelocity());
-  this->sprite->rotate(this->physics->getSpeed() * this->physics->getSteeringAngle());
+  // this->sprite->move(this->physics->getVelocity());
+  // this->sprite->rotate(this->physics->getSpeed() * this->physics->getSteeringAngle());
 }
 
 void Car::accelerate()
 {
-  this->physics->setAcceleration(this->engine->getPower(), this->sprite->getRotation() * 0.0174532925);
-  this->update();
+  float enginePower = this->engine->getPower() * 0.9f;
+  float mass = 900.0f;
+  float dragCoeff = 0.8f;
+  float liftCoeff = -3.0f;
+  float frontalArea = 1.4f;
+  float rollingCoeff = 0.015f;
+  float frictionCoeff = 1.5f;
+
+  this->physics->accelerate(enginePower, mass, dragCoeff, liftCoeff, frontalArea, rollingCoeff, frictionCoeff);
+
+  std::cout << this->physics->getAcceleration() << "|" << this->physics->getSpeed() * 3.6f << std::endl;
+  // this->physics->setAcceleration(this->engine->getPower(), this->sprite->getRotation() * 0.0174532925);
+  // this->update();
 };
 
 void Car::decelerate()
 {
-  if (this->physics->getSpeed() != 0)
-  {
-    this->physics->setAcceleration(0, this->sprite->getRotation() * 0.0174532925);
-  }
-  this->update();
+  // if (this->physics->getSpeed() != 0)
+  // {
+  //   this->physics->setAcceleration(0, this->sprite->getRotation() * 0.0174532925);
+  // }
+  // this->update();
 }
 
 void Car::brake()
 {
-  this->physics->setAcceleration(-100, this->sprite->getRotation() * 0.0174532925);
-  this->update();
+  // this->physics->setAcceleration(-100, this->sprite->getRotation() * 0.0174532925);
+  // this->update();
 }
 
 void Car::reverse()
 {
-  this->physics->setAcceleration(100, this->sprite->getRotation() * 0.0174532925);
-  this->update();
+  // this->physics->setAcceleration(100, this->sprite->getRotation() * 0.0174532925);
+  // this->update();
 }
 
 void Car::turnLeft()
 {
-  this->physics->setSteeringAngle(-this->steeringAngle);
-  this->decelerate();
-  this->update();
+  // this->physics->setSteeringAngle(-this->steeringAngle);
+  // this->decelerate();
+  // this->update();
 }
 
 void Car::turnRight()
 {
-  this->physics->setSteeringAngle(this->steeringAngle);
-  this->decelerate();
-  this->update();
+  // this->physics->setSteeringAngle(this->steeringAngle);
+  // this->decelerate();
+  // this->update();
 }

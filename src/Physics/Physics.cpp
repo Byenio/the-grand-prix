@@ -1,82 +1,87 @@
 #include "Physics.hpp"
 
-Physics::Physics() : speed(0), acceleration(0), steeringAngle(0), speedSign(1)
-{
-}
+Physics::Physics() : acceleration(0), speed(0){};
 
 Physics::~Physics(){};
 
-void Physics::setSpeed(float speed)
+float calcNormalForce(float mass, float g, float liftForce)
 {
-  this->speed = speed;
+  return mass * g - liftForce;
 }
 
-float Physics::getSpeed()
+float calculateDownforce(float d, float v, float liftCoeff, float area)
 {
-  return this->speed;
+  return 0.5 * d * v * v * liftCoeff * area;
 }
 
-sf::Vector2f Physics::getVelocity()
+float calculateDragForce(float d, float v, float dragCoeff, float area)
 {
-  return this->velocity;
+  return 0.5 * d * v * v * dragCoeff * area;
 }
 
-void Physics::setVelocity(float angleInRad)
+float calculateTractionForce(float frictionCoeff, float normalForce)
 {
-  this->velocity = sf::Vector2f(sin(angleInRad) * speed, -cos(angleInRad) * speed);
+  return frictionCoeff * normalForce;
 }
 
-void Physics::setTractionForce(int power, float angleInRad)
+float calculateRollingResistanceForce(float rollingCoeff, float normalForce)
 {
-  this->tractionForce = sf::Vector2f(0.7 * power * sin(angleInRad), 0.7 * power * (-cos(angleInRad)));
+  return rollingCoeff * normalForce;
 }
 
-void Physics::setDragForce()
+float throttleMap(float speed)
 {
-  this->dragForce = sf::Vector2f(-1.29 * speed * velocity.x, -1.29 * speed * velocity.y);
+  float throttlePower;
+  if (speed <= 28.0f)
+  {
+    float base = 1.1f;
+    throttlePower = (std::exp(speed / (28.0f) * std::log(base)) - 1.0f) / (base - 1.0f);
+  }
+  else
+  {
+    throttlePower = 1.0f;
+  }
+  return throttlePower;
 }
 
-void Physics::setRollingForce()
+void Physics::accelerate(float power, float mass, float dragCoeff, float liftCoeff, float frontalArea,
+                         float rollingCoeff, float frictionCoeff)
 {
-  this->rollingForce = sf::Vector2f(-1.29 * 30 * speed, -1.29 * 30 * speed);
+  float liftForce = calculateDownforce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
+  float normalForce = calcNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
+
+  float tractionForce = calculateTractionForce(frictionCoeff, normalForce);
+  float dragForce = calculateDragForce(AIR_DENSITY, this->speed, dragCoeff, frontalArea);
+  float rollingResistanceForce = calculateRollingResistanceForce(rollingCoeff, normalForce);
+
+  float throttlePower = throttleMap(this->speed);
+  float engineForce;
+  if (std::fabs(this->speed) > 1e-6f)
+  {
+    engineForce = (power * throttlePower) / this->speed;
+  }
+  else
+  {
+    engineForce = frictionCoeff * normalForce * 0.1f;
+  }
+
+  float netForce = engineForce - dragForce - rollingResistanceForce;
+
+  this->acceleration = netForce / mass;
+
+  this->speed += this->acceleration * TICKRATE_DELTA;
 }
 
-void Physics::setAcceleration(int power, float angleInRad)
+void decelerate()
 {
-  setVelocity(angleInRad);
-  setTractionForce(power, angleInRad);
-  setDragForce();
-  setRollingForce();
-
-  sf::Vector2f accelerationVector = sf::Vector2f(tractionForce.x / 900, tractionForce.y / 900);
-  sf::Vector2f decelerationVector =
-      sf::Vector2f((rollingForce.x + dragForce.x) / 900, (rollingForce.y + dragForce.y) / 900);
-
-  this->acceleration = 
-  sqrt(accelerationVector.x * accelerationVector.x + accelerationVector.y * accelerationVector.y) - 
-  sqrt(decelerationVector.x * decelerationVector.x + decelerationVector.y * decelerationVector.y);
-
-  this->speed += this->acceleration*1.0f/30.0f;
-
-  speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
-};
+}
 
 float Physics::getAcceleration()
 {
   return this->acceleration;
 }
 
-void Physics::setSteeringAngle(float angle)
+float Physics::getSpeed()
 {
-  this->steeringAngle = angle * speedSign;
-}
-
-float Physics::getSteeringAngle()
-{
-  return this->steeringAngle;
-}
-
-int Physics::getSign()
-{
-  return this->speedSign;
+  return this->speed;
 }
