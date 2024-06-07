@@ -33,6 +33,7 @@ public:
   void setRollingForce();
   void setNormalForce();
   void setAcceleration(int power, float angleInRad);
+  void setNegativeAcceleration(int power, float angleInRad);
   void setSteeringAngle(float angle);
   void setSpeed();
   void setSpeed(float speed);

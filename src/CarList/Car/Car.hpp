@@ -45,6 +45,7 @@ public:
 
   void accelerate();
   void decelerate();
+  void negativeDecelerate();
   void brake();
   void reverse();
   void turnLeft();

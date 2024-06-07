@@ -38,11 +38,11 @@ void Physics::setTractionForce(int power)
 {
   if (this->speed == 0)
   {
-    this->tractionForce = (0.9 * power);
+    this->tractionForce = abs((0.9 * power));
   }
   else
   {
-    this->tractionForce = (0.9 * power) / speed;
+    this->tractionForce = abs((0.9 * power) / speed);
   }
 }
 
@@ -70,6 +70,27 @@ void Physics::setAcceleration(int power, float angleInRad)
   setNormalForce();
   setRollingForce();
   this->acceleration = (tractionForce - dragForce - rollingForce) / 900;
+  std::cout << "a " << acceleration << std::endl;
+  std::cout << "t " << tractionForce << std::endl;
+  std::cout << "r " << rollingForce << std::endl;
+  std::cout << "d " << dragForce << std::endl;
+
+  this->accelerationX = acceleration * sin(angleInRad);
+  this->accelerationY = acceleration * -cos(angleInRad);
+
+  speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
+
+  setVelocity();
+  setSpeed();
+};
+
+void Physics::setNegativeAcceleration(int power, float angleInRad)
+{
+  setTractionForce(power);
+  setDragForce();
+  setNormalForce();
+  setRollingForce();
+  this->acceleration = (tractionForce - rollingForce) / 900;
   std::cout << "a " << acceleration << std::endl;
   std::cout << "t " << tractionForce << std::endl;
   std::cout << "r " << rollingForce << std::endl;

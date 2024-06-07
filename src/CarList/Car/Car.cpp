@@ -79,6 +79,15 @@ void Car::decelerate()
   this->update();
 }
 
+void Car::negativeDecelerate()
+{
+  if (this->physics->getSpeed() != 0)
+  {
+    this->physics->setNegativeAcceleration(0, this->sprite->getRotation() * 0.0174532925);
+  }
+  this->update();
+}
+
 void Car::brake()
 {
   this->physics->setAcceleration(-100, this->sprite->getRotation() * 0.0174532925);
@@ -87,7 +96,7 @@ void Car::brake()
 
 void Car::reverse()
 {
-  this->physics->setAcceleration(100, this->sprite->getRotation() * 0.0174532925);
+  this->physics->setNegativeAcceleration(100000, this->sprite->getRotation() * 0.0174532925);
   this->update();
 }
 

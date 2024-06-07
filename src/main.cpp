@@ -137,7 +137,14 @@ int main()
 
       if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
       {
-        pGame->getCar()->decelerate();
+        if (pGame->getCar()->getPhysics()->getSign() > 0)
+        {
+          pGame->getCar()->decelerate();
+        }
+        else
+        {
+          pGame->getCar()->negativeDecelerate();
+        }
       }
 
       if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
