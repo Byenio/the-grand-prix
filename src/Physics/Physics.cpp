@@ -6,9 +6,10 @@ Physics::Physics() : speed(0), acceleration(0), steeringAngle(0), speedSign(1)
 
 Physics::~Physics(){};
 
-void Physics::setSpeed(float speed)
+void Physics::setSpeed()
 {
-  this->speed = speed;
+  std::cout<<velocityX<<" "<<velocityY<<" "<<std::endl;
+  this->speed = sqrt(this->velocityX * this->velocityX + this->velocityY * this->velocityY);
 }
 
 float Physics::getSpeed()
@@ -18,45 +19,62 @@ float Physics::getSpeed()
 
 sf::Vector2f Physics::getVelocity()
 {
-  return this->velocity;
+  return sf::Vector2f(velocityX, velocityY);
 }
 
-void Physics::setVelocity(float angleInRad)
+void Physics::setVelocity()
 {
-  this->velocity = sf::Vector2f(sin(angleInRad) * speed, -cos(angleInRad) * speed);
+  this->velocityX += accelerationX;
+  this->velocityY += accelerationY;
 }
 
-void Physics::setTractionForce(int power, float angleInRad)
+void Physics::setTractionForce(int power)
 {
-  this->tractionForce = sf::Vector2f(0.7 * power * sin(angleInRad), 0.7 * power * (-cos(angleInRad)));
+  if (this->speed == 0){
+    this->tractionForce = 0;
+  } 
+  else{
+    this->tractionForce = (0.9*power) / speed;
+  } 
 }
 
 void Physics::setDragForce()
 {
-  this->dragForce = sf::Vector2f(-1.29 * speed * velocity.x, -1.29 * speed * velocity.y);
+  this->dragForce = 0.5 * 1.29 * 0.7 * 1.5 * speed * speed;
 }
 
 void Physics::setRollingForce()
 {
-  this->rollingForce = sf::Vector2f(-1.29 * 30 * speed, -1.29 * 30 * speed);
+  if(this->speed == 0){
+    this->rollingForce = 0;
+  }else{
+    this->rollingForce = 0.015 * normalForce; 
+  }
+}
+
+void Physics::setNormalForce(){
+  this->normalForce = 900 * 9.81 + 15000;
 }
 
 void Physics::setAcceleration(int power, float angleInRad)
 {
-  setVelocity(angleInRad);
-  setTractionForce(power, angleInRad);
+  setVelocity();
+  setSpeed();
+  setTractionForce(power);
   setDragForce();
+  setNormalForce();
   setRollingForce();
+  this->acceleration = (tractionForce - dragForce - rollingForce)/900;
+  //std::cout << acceleration << std::endl;
+  //std::cout << tractionForce << std::endl;
+  //std::cout << rollingForce << std::endl;
+  std::cout << dragForce << std::endl;
+  //std::cout << angleInRad << std::endl;
 
-  sf::Vector2f accelerationVector = sf::Vector2f(tractionForce.x / 900, tractionForce.y / 900);
-  sf::Vector2f decelerationVector =
-      sf::Vector2f((rollingForce.x + dragForce.x) / 900, (rollingForce.y + dragForce.y) / 900);
+  this->accelerationX = acceleration * cos(angleInRad);
+  this->accelerationY = acceleration * sin(angleInRad);
 
-  this->acceleration = 
-  sqrt(accelerationVector.x * accelerationVector.x + accelerationVector.y * accelerationVector.y) - 
-  sqrt(decelerationVector.x * decelerationVector.x + decelerationVector.y * decelerationVector.y);
-
-  this->speed += this->acceleration*1.0f/30.0f;
+  
 
   speed >= 0 ? this->speedSign = 1 : this->speedSign = -1;
 };

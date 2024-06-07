@@ -133,17 +133,17 @@ int main()
 
     if (noAccelerationKeyPressed())
     {
-      pGame->getCar()->getPhysics()->setTractionForce(0, pGame->getCar()->getSprite()->getRotation());
+      pGame->getCar()->getPhysics()->setTractionForce(0);
 
       if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
       {
         pGame->getCar()->decelerate();
       }
 
-      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
-      {
-        pGame->getCar()->getPhysics()->setSpeed(0);
-      }
+      // if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
+      // {
+      //   pGame->getCar()->getPhysics()->setSpeed();
+      // }
     }
 
     if (noSteeringKeyPressed())

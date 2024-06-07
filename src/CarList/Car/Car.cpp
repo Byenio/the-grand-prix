@@ -59,7 +59,6 @@ void Car::update()
 {
   const float speed = this->physics->getSpeed();
   const float angleInRad = this->sprite->getRotation() * 0.0174532925;
-  sf::Vector2f movement(speed * sin(angleInRad), -speed * cos(angleInRad));
 
   this->sprite->move(this->physics->getVelocity());
   this->sprite->rotate(this->physics->getSpeed() * this->physics->getSteeringAngle());
