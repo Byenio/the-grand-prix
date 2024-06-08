@@ -84,7 +84,7 @@ int main()
   int currentSector = 1;
 
   game.getCar()->getSprite()->setScale(scale, scale);
-  game.getCar()->getSprite()->setPosition(7200, 3300);
+  game.getCar()->getSprite()->setPosition(62100, 46900);
 
   // game.closeSession();
   // game.closeGame();
@@ -113,20 +113,34 @@ int main()
       {
         // if stopped or moving forward
         // accelerate
-        game.getCar()->accelerate();
-
+        if (game.getCar()->getPhysics()->getSpeed() >= 0)
+        {
+          game.getCar()->getPhysics()->setPositiveSpeedSign();
+          game.getCar()->accelerate();
+        }
         // if moving backward
         // brake
+        else
+        {
+          game.getCar()->brake();
+        }
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
       {
         // if moving forward
         // brake
-        game.getCar()->brake();
-
+        if (game.getCar()->getPhysics()->getSpeed() > 0)
+        {
+          game.getCar()->brake();
+        }
         // if stopped or moving rearward
         // delay(ie 0.5s) or accelerate
+        else
+        {
+          game.getCar()->getPhysics()->setNegativeSpeedSign();
+          game.getCar()->reverse();
+        }
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -142,13 +156,18 @@ int main()
       if (noAccelerationKeyPressed())
       {
         // decelerate
-        game.getCar()->decelerate();
+        if (game.getCar()->getPhysics()->getSpeed() != 0)
+        {
+          game.getCar()->decelerate();
+        }
       }
 
       if (noSteeringKeyPressed())
       {
         // go straight
       }
+
+      game.getCar()->update();
     }
 
     std::string speedString = std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));

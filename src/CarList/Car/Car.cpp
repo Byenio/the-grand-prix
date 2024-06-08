@@ -61,22 +61,26 @@ void Car::update()
   // const float angleInRad = this->sprite->getRotation() * 0.0174532925;
   // sf::Vector2f movement(speed * sin(angleInRad), -speed * cos(angleInRad));
 
-  // this->sprite->move(this->physics->getVelocity());
+  this->sprite->move(this->physics->getVelocity());
   // this->sprite->rotate(this->physics->getSpeed() * this->physics->getSteeringAngle());
 }
 
 void Car::accelerate()
 {
   float enginePower = this->engine->getPower() * 0.9f;
+  float spriteRotation = this->sprite->getRotation() * 0.0174532925;
 
-  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF);
+  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF,
+                            spriteRotation);
   // this->physics->setAcceleration(this->engine->getPower(), this->sprite->getRotation() * 0.0174532925);
   // this->update();
 };
 
 void Car::decelerate()
 {
-  this->physics->decelerate(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF);
+  float spriteRotation = this->sprite->getRotation() * 0.0174532925;
+
+  this->physics->decelerate(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, spriteRotation);
   // if (this->physics->getSpeed() != 0)
   // {
   //   this->physics->setAcceleration(0, this->sprite->getRotation() * 0.0174532925);
@@ -86,13 +90,21 @@ void Car::decelerate()
 
 void Car::brake()
 {
-  this->physics->brake(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, BRAKE_COEFF);
+  float spriteRotation = this->sprite->getRotation() * 0.0174532925;
+
+  this->physics->brake(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, BRAKE_COEFF,
+                       spriteRotation);
   // this->physics->setAcceleration(-100, this->sprite->getRotation() * 0.0174532925);
   // this->update();
 }
 
 void Car::reverse()
 {
+  float enginePower = 15000 * 0.9f;
+  float spriteRotation = this->sprite->getRotation() * 0.0174532925;
+
+  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF,
+                            spriteRotation);
   // this->physics->setAcceleration(100, this->sprite->getRotation() * 0.0174532925);
   // this->update();
 }

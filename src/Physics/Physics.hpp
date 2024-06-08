@@ -11,22 +11,30 @@ class Physics
   const float GRAVITY_ACCELERATION = 9.81f;
   const float TICKRATE_DELTA = 1.0f / 32.0f;
 
-  float acceleration;
+  sf::Vector2f acceleration;
+  sf::Vector2f velocity;
   float speed;
+
+  int speedSign;
 
 public:
   Physics();
   ~Physics();
 
   void accelerate(float power, float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
-                  float frictionCoeff);
+                  float frictionCoeff, float rotation);
 
   void decelerate(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
-                  float frictionCoeff);
+                  float frictionCoeff, float rotation);
 
   void brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff, float frictionCoeff,
-             float brakeCoeff);
+             float brakeCoeff, float rotation);
 
-  float getAcceleration();
+  sf::Vector2f getAcceleration();
+  sf::Vector2f getVelocity();
   float getSpeed();
+
+  void setNegativeSpeedSign();
+  void setPositiveSpeedSign();
+  int getSpeedSign();
 };
