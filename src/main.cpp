@@ -15,6 +15,9 @@ int main()
   sf::RenderWindow window(sf::VideoMode(1600, 1000), "The Grand Prix");
   sf::View view = window.getDefaultView();
   window.setFramerateLimit(60);
+  int tickrate = 30;
+  float oldTime = 0;
+
   int scale = 4;
   int textureSize = 64;
   int centerX = (window.getSize().x - textureSize * scale) / 2;
@@ -28,11 +31,11 @@ int main()
   speed.setCharacterSize(16);
   speed.setFillColor(sf::Color::Black);
 
-  Game *pGame = new Game(&window);
+  Game game(&window);
 
-  pGame->startSession(1, 1);
+  game.startSession(1, 1);
 
-  json trackModel = pGame->getSession()->getTrackModel();
+  json trackModel = game.getSession()->getTrackModel();
 
   std::vector<sf::RectangleShape> trackSegments;
   std::vector<TrackSectors> trackSectorLines;
@@ -80,12 +83,12 @@ int main()
 
   int currentSector = 1;
 
-  pGame->getCar()->getSprite()->setScale(scale, scale);
-  pGame->getCar()->getSprite()->setPosition(7200, 3300);
+  game.getCar()->getSprite()->setScale(scale, scale);
+  game.getCar()->getSprite()->setPosition(62100, 46900);
 
-  // pGame->closeSession();
-  // pGame->closeGame();
-  // delete pGame;
+  // game.closeSession();
+  // game.closeGame();
+  // delete game;
 
   while (window.isOpen())
   {
@@ -97,67 +100,80 @@ int main()
         window.close();
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-      if (pGame->getCar()->getPhysics()->getSign() > 0)
-      {
-        pGame->getCar()->accelerate();
-      }
-      else
-      {
-        pGame->getCar()->brake();
-      }
-    }
+    // session timer
+    float newTime = game.getSession()->getClock().getElapsedTime().asMilliseconds();
+    float delta = newTime - oldTime;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    if (delta >= tickrate)
     {
-      if (pGame->getCar()->getPhysics()->getSign() > 0)
+      oldTime = newTime;
+
+      // update physics
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
       {
-        pGame->getCar()->brake();
-      }
-      else
-      {
-        pGame->getCar()->reverse();
-      }
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-      pGame->getCar()->turnLeft();
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-      pGame->getCar()->turnRight();
-    }
-
-    if (noAccelerationKeyPressed())
-    {
-      pGame->getCar()->getPhysics()->setTractionForce(0, pGame->getCar()->getSprite()->getRotation());
-
-      if (!isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
-      {
-        pGame->getCar()->decelerate();
+        // if stopped or moving forward
+        // accelerate
+        if (game.getCar()->getPhysics()->getSpeed() >= 0)
+        {
+          game.getCar()->getPhysics()->setPositiveSpeedSign();
+          game.getCar()->accelerate();
+        }
+        // if moving backward
+        // brake
+        else
+        {
+          game.getCar()->brake();
+        }
       }
 
-      if (isZero(pGame->getCar()->getPhysics()->getSpeed(), 1e-1f))
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
       {
-        pGame->getCar()->getPhysics()->setSpeed(0);
+        // if moving forward
+        // brake
+        if (game.getCar()->getPhysics()->getSpeed() > 0)
+        {
+          game.getCar()->brake();
+        }
+        // if stopped or moving rearward
+        // delay(ie 0.5s) or accelerate
+        else
+        {
+          game.getCar()->getPhysics()->setNegativeSpeedSign();
+          game.getCar()->reverse();
+        }
       }
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+      {
+        // turn left
+      }
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+      {
+        // turn right
+      }
+
+      if (noAccelerationKeyPressed())
+      {
+        // decelerate
+        if (game.getCar()->getPhysics()->getSpeed() != 0)
+        {
+          game.getCar()->decelerate();
+        }
+      }
+
+      if (noSteeringKeyPressed())
+      {
+        // go straight
+      }
+
+      game.getCar()->update();
     }
 
-    if (noSteeringKeyPressed())
-    {
-      pGame->getCar()->getPhysics()->setSteeringAngle(0);
-    }
-
-    std::string speedString = std::to_string(static_cast<int>(pGame->getCar()->getPhysics()->getSpeed() * 3.6));
+    std::string speedString = std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));
     speed.setString(speedString + " km/h");
 
-    std::cout << pGame->getCar()->getPhysics()->getAcceleration() << "|" << pGame->getCar()->getPhysics()->getSpeed()
-              << std::endl;
-
-    view.setCenter(pGame->getCar()->getSprite()->getPosition());
+    view.setCenter(game.getCar()->getSprite()->getPosition());
     speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);
 
     window.setView(view);
@@ -169,7 +185,7 @@ int main()
     {
       window.draw(segment);
 
-      if (pGame->getCar()->getSprite()->getGlobalBounds().intersects(segment.getGlobalBounds()))
+      if (game.getCar()->getSprite()->getGlobalBounds().intersects(segment.getGlobalBounds()))
       {
         offtrack = false;
       }
@@ -184,15 +200,13 @@ int main()
     {
       window.draw(sectorLine.shape);
 
-      if (pGame->getCar()->getSprite()->getGlobalBounds().intersects(sectorLine.shape.getGlobalBounds()))
+      if (game.getCar()->getSprite()->getGlobalBounds().intersects(sectorLine.shape.getGlobalBounds()))
       {
         currentSector = sectorLine.num;
       }
     }
 
-    std::cout << currentSector << std::endl;
-
-    window.draw(*pGame->getCar()->getSprite());
+    window.draw(*game.getCar()->getSprite());
     window.draw(speed);
     window.display();
   }

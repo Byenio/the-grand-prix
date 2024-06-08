@@ -7,31 +7,34 @@
 
 class Physics
 {
+  const float AIR_DENSITY = 1.29f;
+  const float GRAVITY_ACCELERATION = 9.81f;
+  const float TICKRATE_DELTA = 1.0f / 32.0f;
+
+  sf::Vector2f acceleration;
   sf::Vector2f velocity;
-  sf::Vector2f tractionForce;
-  sf::Vector2f dragForce;
-  sf::Vector2f rollingForce;
   float speed;
-  float acceleration;
-  float steeringAngle;
+
   int speedSign;
 
 public:
   Physics();
   ~Physics();
 
-  void setTractionForce(int power, float angleInRad);
-  void setDragForce();
-  void setRollingForce();
-  void setAcceleration(int power, float angleInRad);
-  void setSteeringAngle(float angle);
-  void setSpeed(float speed);
-  void setVelocity(float angleInRad);
+  void accelerate(float power, float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
+                  float frictionCoeff, float rotation);
 
-  float getSpeed();
-  float getAcceleration();
-  float getSteeringAngle();
+  void decelerate(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
+                  float frictionCoeff, float rotation);
+
+  void brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff, float frictionCoeff,
+             float brakeCoeff, float rotation);
+
+  sf::Vector2f getAcceleration();
   sf::Vector2f getVelocity();
+  float getSpeed();
 
-  int getSign();
+  void setNegativeSpeedSign();
+  void setPositiveSpeedSign();
+  int getSpeedSign();
 };

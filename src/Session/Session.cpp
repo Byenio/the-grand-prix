@@ -1,6 +1,7 @@
 #include "Session.hpp"
 
-Session::Session(int id, std::shared_ptr<Track> track, std::shared_ptr<Car> car) : id(id), track(track), car(car){};
+Session::Session(int id, std::shared_ptr<Track> track, std::shared_ptr<Car> car)
+    : id(id), track(track), car(car), clock(){};
 
 Session::~Session(){};
 
@@ -17,6 +18,11 @@ std::shared_ptr<Track> Session::getTrack()
 std::shared_ptr<Car> Session::getCar()
 {
   return this->car;
+}
+
+sf::Clock Session::getClock()
+{
+  return this->clock;
 }
 
 json Session::getTrackModel()
