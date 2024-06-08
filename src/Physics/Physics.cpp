@@ -4,12 +4,12 @@ Physics::Physics() : acceleration(0), speed(0){};
 
 Physics::~Physics(){};
 
-float calcNormalForce(float mass, float g, float liftForce)
+float calculateNormalForce(float mass, float g, float liftForce)
 {
   return mass * g - liftForce;
 }
 
-float calculateDownforce(float d, float v, float liftCoeff, float area)
+float calculateLiftForce(float d, float v, float liftCoeff, float area)
 {
   return 0.5 * d * v * v * liftCoeff * area;
 }
@@ -27,6 +27,11 @@ float calculateTractionForce(float frictionCoeff, float normalForce)
 float calculateRollingResistanceForce(float rollingCoeff, float normalForce)
 {
   return rollingCoeff * normalForce;
+}
+
+float calculateBrakeForce(float brakeCoeff, float normalForce)
+{
+  return brakeCoeff * normalForce;
 }
 
 float throttleMap(float speed)
@@ -47,8 +52,8 @@ float throttleMap(float speed)
 void Physics::accelerate(float power, float mass, float dragCoeff, float liftCoeff, float frontalArea,
                          float rollingCoeff, float frictionCoeff)
 {
-  float liftForce = calculateDownforce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
-  float normalForce = calcNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
+  float liftForce = calculateLiftForce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
+  float normalForce = calculateNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
 
   float tractionForce = calculateTractionForce(frictionCoeff, normalForce);
   float dragForce = calculateDragForce(AIR_DENSITY, this->speed, dragCoeff, frontalArea);
@@ -62,18 +67,47 @@ void Physics::accelerate(float power, float mass, float dragCoeff, float liftCoe
   }
   else
   {
-    engineForce = frictionCoeff * normalForce * 0.1f;
+    engineForce = tractionForce * 0.1f;
   }
 
   float netForce = engineForce - dragForce - rollingResistanceForce;
-
   this->acceleration = netForce / mass;
-
   this->speed += this->acceleration * TICKRATE_DELTA;
 }
 
-void decelerate()
+void Physics::decelerate(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
+                         float frictionCoeff)
 {
+  float liftForce = calculateLiftForce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
+  float normalForce = calculateNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
+
+  float dragForce = calculateDragForce(AIR_DENSITY, this->speed, dragCoeff, frontalArea);
+  float rollingResistanceForce = calculateRollingResistanceForce(rollingCoeff, normalForce);
+
+  float netForce = -dragForce - rollingResistanceForce;
+  this->acceleration = netForce / mass;
+  this->speed += this->acceleration * TICKRATE_DELTA;
+}
+
+void Physics::brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
+                    float frictionCoeff, float brakeCoeff)
+{
+  float liftForce = calculateLiftForce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
+  float normalForce = calculateNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
+
+  float dragForce = calculateDragForce(AIR_DENSITY, this->speed, dragCoeff, frontalArea);
+  float rollingResistanceForce = calculateRollingResistanceForce(rollingCoeff, normalForce);
+
+  float brakeForce = calculateBrakeForce(brakeCoeff, normalForce);
+
+  float netForce = -brakeForce - dragForce - rollingResistanceForce;
+  this->acceleration = netForce / mass;
+
+  float resSpeed = this->speed + this->acceleration * TICKRATE_DELTA;
+  if (resSpeed > 0)
+  {
+    this->speed = resSpeed;
+  }
 }
 
 float Physics::getAcceleration()

@@ -25,10 +25,17 @@ class Car
   std::vector<std::shared_ptr<Tyre>> tyres;
 
   std::shared_ptr<Physics> physics;
-  float dragAcceleration = -.1;
-  float brakeAcceleration = -2;
-  float steeringAngle = .08;
-  float reverseAcceleration = -.5;
+
+  const float MASS = 900.0f;
+
+  const float DRAG_COEFF = 0.8f;
+  const float LIFT_COEFF = -3.0f;
+  const float FRONTAL_AREA = 1.4f;
+
+  const float ROLL_COEFF = 0.015f;
+  const float FRICTION_COEFF = 1.5f;
+
+  const float BRAKE_COEFF = 1.2f;
 
 public:
   Car(const int id, const std::string name, const std::string texturePath, const int horsepower, const float grip);

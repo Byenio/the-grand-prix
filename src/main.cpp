@@ -112,20 +112,21 @@ int main()
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
       {
         // if stopped or moving forward
-        // accelerate(1)
+        // accelerate
         game.getCar()->accelerate();
 
         // if moving backward
-        // brake(1)
+        // brake
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
       {
         // if moving forward
-        // brake(1)
+        // brake
+        game.getCar()->brake();
 
         // if stopped or moving rearward
-        // delay(ie 0.5s) or accelerate(2)
+        // delay(ie 0.5s) or accelerate
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -141,6 +142,7 @@ int main()
       if (noAccelerationKeyPressed())
       {
         // decelerate
+        game.getCar()->decelerate();
       }
 
       if (noSteeringKeyPressed())

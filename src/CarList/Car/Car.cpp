@@ -68,22 +68,15 @@ void Car::update()
 void Car::accelerate()
 {
   float enginePower = this->engine->getPower() * 0.9f;
-  float mass = 900.0f;
-  float dragCoeff = 0.8f;
-  float liftCoeff = -3.0f;
-  float frontalArea = 1.4f;
-  float rollingCoeff = 0.015f;
-  float frictionCoeff = 1.5f;
 
-  this->physics->accelerate(enginePower, mass, dragCoeff, liftCoeff, frontalArea, rollingCoeff, frictionCoeff);
-
-  std::cout << this->physics->getAcceleration() << "|" << this->physics->getSpeed() * 3.6f << std::endl;
+  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF);
   // this->physics->setAcceleration(this->engine->getPower(), this->sprite->getRotation() * 0.0174532925);
   // this->update();
 };
 
 void Car::decelerate()
 {
+  this->physics->decelerate(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF);
   // if (this->physics->getSpeed() != 0)
   // {
   //   this->physics->setAcceleration(0, this->sprite->getRotation() * 0.0174532925);
@@ -93,6 +86,7 @@ void Car::decelerate()
 
 void Car::brake()
 {
+  this->physics->brake(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, BRAKE_COEFF);
   // this->physics->setAcceleration(-100, this->sprite->getRotation() * 0.0174532925);
   // this->update();
 }

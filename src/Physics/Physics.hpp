@@ -21,7 +21,11 @@ public:
   void accelerate(float power, float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
                   float frictionCoeff);
 
-  void decelerate();
+  void decelerate(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
+                  float frictionCoeff);
+
+  void brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff, float frictionCoeff,
+             float brakeCoeff);
 
   float getAcceleration();
   float getSpeed();
