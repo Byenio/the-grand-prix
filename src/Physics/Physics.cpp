@@ -16,26 +16,34 @@ float calculateLiftForce(float d, float v, float liftCoeff, float area)
 
 sf::Vector2f calcDragForce(float d, float v, float dragCoeff, float area, float rotation, int speedSign)
 {
-  return sf::Vector2f(speedSign * 0.5 * d * v * v * dragCoeff * area * sin(rotation),
-                      speedSign * 0.5 * d * v * v * dragCoeff * area * -cos(rotation));
+  double x = (speedSign * 0.5 * d * v * v * dragCoeff * area) * sin(rotation);
+  double y = (speedSign * 0.5 * d * v * v * dragCoeff * area) * -cos(rotation);
+  return sf::Vector2f(x * cos(rotation) - y * sin(rotation) ,
+                      x * sin(rotation) + y * cos(rotation));
 }
 
 sf::Vector2f calcTractionForce(float frictionCoeff, float normalForce, float rotation, int speedSign)
 {
-  return sf::Vector2f(speedSign * frictionCoeff * normalForce * sin(rotation),
-                      speedSign * frictionCoeff * normalForce * -cos(rotation));
+  double x = (speedSign * frictionCoeff * normalForce) * sin(rotation);
+  double y = (speedSign * frictionCoeff * normalForce) * -cos(rotation);
+  return sf::Vector2f(x * cos(rotation) - y * sin(rotation),
+                      x * sin(rotation) + y * cos(rotation));
 }
 
 sf::Vector2f calcRollingForce(float rollingCoeff, float normalForce, float rotation, int speedSign)
 {
-  return sf::Vector2f(speedSign * rollingCoeff * normalForce * sin(rotation),
-                      speedSign * rollingCoeff * normalForce * -cos(rotation));
+  double x = (speedSign * rollingCoeff * normalForce) * sin(rotation);
+  double y = (speedSign * rollingCoeff * normalForce) * -cos(rotation);
+  return sf::Vector2f(x * cos(rotation) - y * sin(rotation),
+                      x * sin(rotation) + y * cos(rotation));
 }
 
 sf::Vector2f calcBrakeForce(float brakeCoeff, float normalForce, float rotation, int speedSign)
 {
-  return sf::Vector2f(speedSign * brakeCoeff * normalForce * sin(rotation),
-                      speedSign * brakeCoeff * normalForce * -cos(rotation));
+  double x = (speedSign * brakeCoeff * normalForce) * sin(rotation);
+  double y = (speedSign * brakeCoeff * normalForce) * -cos(rotation);
+  return sf::Vector2f(x * cos(rotation) - y * sin(rotation),
+                      x * sin(rotation) + y * cos(rotation));
 }
 
 float throttleMap(float speed, float speedSign)
@@ -82,8 +90,10 @@ void Physics::accelerate(float power, float mass, float dragCoeff, float liftCoe
   sf::Vector2f propulsionForce;
   if (std::fabs(this->speed) > 1e-6f)
   {
-    propulsionForce = sf::Vector2f(speedSign * ((power * throttlePower) / this->speed * sin(rotation)),
-                                   speedSign * ((power * throttlePower) / this->speed * -cos(rotation)));
+    double x = (speedSign * ((power * throttlePower) / this->speed)) * sin(rotation);
+    double y = (speedSign * ((power * throttlePower) / this->speed)) * -cos(rotation);
+    propulsionForce = sf::Vector2f(x * cos(rotation) - y * sin(rotation),
+                                  x * sin(rotation) + y * cos(rotation));
   }
   else
   {
