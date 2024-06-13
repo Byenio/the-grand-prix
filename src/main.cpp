@@ -107,6 +107,37 @@ int main()
       {
         pGame->getCar()->brake();
       }
+<<<<<<< Updated upstream
+=======
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+      {
+        // turn left
+        game.getCar()->turnLeft();
+      }
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+      {
+        // turn right
+        game.getCar()->turnRight();
+      }
+
+      if (noAccelerationKeyPressed())
+      {
+        // decelerate
+        if (game.getCar()->getPhysics()->getSpeed() != 0)
+        {
+          game.getCar()->decelerate();
+        }
+      }
+
+      if (noSteeringKeyPressed())
+      {
+        // go straight
+      }
+
+      game.getCar()->update();
+>>>>>>> Stashed changes
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))

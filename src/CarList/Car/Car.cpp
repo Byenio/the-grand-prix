@@ -102,14 +102,30 @@ void Car::reverse()
 
 void Car::turnLeft()
 {
+<<<<<<< Updated upstream
   this->physics->setSteeringAngle(-this->steeringAngle);
   this->decelerate();
+=======
+  // this->physics->setSteeringAngle(-this->steeringAngle);
+  // this->decelerate();
+  float angle = this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA,FRICTION_COEFF);
+  this->sprite->rotate(-angle);
+  std::cout << "angle: " << this->sprite->getRotation() << std::endl;
+>>>>>>> Stashed changes
   this->update();
 }
 
 void Car::turnRight()
 {
+<<<<<<< Updated upstream
   this->physics->setSteeringAngle(this->steeringAngle);
   this->decelerate();
+=======
+  // this->physics->setSteeringAngle(this->steeringAngle);
+  // this->decelerate();
+  float angle = this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA,FRICTION_COEFF);
+  this->sprite->rotate(angle);
+  std::cout << "angle: " << this->sprite->getRotation() << std::endl;
+>>>>>>> Stashed changes
   this->update();
 }

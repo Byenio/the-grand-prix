@@ -40,9 +40,16 @@ public:
   void setVelocity();
 
   float getSpeed();
+<<<<<<< Updated upstream
   float getAcceleration();
   float getSteeringAngle();
   sf::Vector2f getVelocity();
 
   int getSign();
+=======
+  float turnAngle(float mass, float liftCoeff, float frontalArea, float frictionCoeff);
+  void setNegativeSpeedSign();
+  void setPositiveSpeedSign();
+  int getSpeedSign();
+>>>>>>> Stashed changes
 };
