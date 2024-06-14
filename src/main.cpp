@@ -18,7 +18,7 @@ int main()
   int tickrate = 30;
   float oldTime = 0;
 
-  int scale = 4;
+  int scale = 1;
   int textureSize = 64;
   int centerX = (window.getSize().x - textureSize * scale) / 2;
   int centerY = (window.getSize().y - textureSize * scale) / 2;
@@ -42,7 +42,7 @@ int main()
   // track segments generation
   for (auto &segment : trackModel[0]["shapes"])
   {
-    float trackScale = 100;
+    float trackScale = 10;
 
     float width = segment["width"];
     float height = segment["height"];
@@ -58,7 +58,7 @@ int main()
   // track sector lines generation
   for (auto &sectorLine : trackModel[0]["sectors"])
   {
-    float trackScale = 100;
+    float trackScale = 10;
 
     float width = sectorLine["width"];
     float height = sectorLine["height"];
@@ -84,7 +84,7 @@ int main()
   int currentSector = 1;
 
   game.getCar()->getSprite()->setScale(scale, scale);
-  game.getCar()->getSprite()->setPosition(62100, 46900);
+  game.getCar()->getSprite()->setPosition(621, 469);
 
   // game.closeSession();
   // game.closeGame();
@@ -146,34 +146,40 @@ int main()
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
       {
         // turn left
+        game.getCar()->multiplyRollCoeff(10);
         game.getCar()->turnLeft();
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
       {
         // turn right
+        game.getCar()->multiplyRollCoeff(10);
         game.getCar()->turnRight();
       }
 
       if (noAccelerationKeyPressed())
       {
         // decelerate
-        if (game.getCar()->getPhysics()->getSpeed() != 0)
+        if (fabs(game.getCar()->getPhysics()->getSpeed()) > 1.0f)
         {
           game.getCar()->decelerate();
+        }
+        else
+        {
+          game.getCar()->getPhysics()->stop();
         }
       }
 
       if (noSteeringKeyPressed())
       {
         // go straight
+        game.getCar()->multiplyRollCoeff(1);
         game.getCar()->setRotation(0);
       }
 
       game.getCar()->update();
-      std::cout << 360 - game.getCar()->getSprite()->getRotation() << std::endl;
-      std::cout << game.getCar()->getRotation() * 57.2957795f << std::endl;
-      std::cout << "===" << std::endl;
+      std::cout << game.getCar()->getPhysics()->getVelocity().x << " " << game.getCar()->getPhysics()->getVelocity().y
+                << std::endl;
     }
 
     std::string speedString = std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));

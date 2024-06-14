@@ -39,4 +39,6 @@ public:
   void setNegativeSpeedSign();
   void setPositiveSpeedSign();
   int getSpeedSign();
+
+  void stop();
 };

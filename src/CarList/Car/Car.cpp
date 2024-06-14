@@ -66,20 +66,22 @@ void Car::accelerate()
   float enginePower = this->engine->getPower() * 0.9f;
   float rotation = (360 - this->sprite->getRotation()) * DEG_TO_RAD;
 
-  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF,
-                            rotation);
+  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF * ROLL_COEFF_MULTIPLIER,
+                            FRICTION_COEFF, rotation);
 };
 
 void Car::decelerate()
 {
   float rotation = (360 - this->sprite->getRotation()) * DEG_TO_RAD;
-  this->physics->decelerate(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, rotation);
+  this->physics->decelerate(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF * ROLL_COEFF_MULTIPLIER,
+                            FRICTION_COEFF, rotation);
 }
 
 void Car::brake()
 {
   float rotation = (360 - this->sprite->getRotation()) * DEG_TO_RAD;
-  this->physics->brake(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF, BRAKE_COEFF, rotation);
+  this->physics->brake(MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF * ROLL_COEFF_MULTIPLIER, FRICTION_COEFF,
+                       BRAKE_COEFF, rotation);
 }
 
 void Car::reverse()
@@ -87,8 +89,8 @@ void Car::reverse()
   float enginePower = 15000 * 0.9f;
   float rotation = (360 - this->sprite->getRotation()) * DEG_TO_RAD;
 
-  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF, FRICTION_COEFF,
-                            rotation);
+  this->physics->accelerate(enginePower, MASS, DRAG_COEFF, LIFT_COEFF, FRONTAL_AREA, ROLL_COEFF * ROLL_COEFF_MULTIPLIER,
+                            FRICTION_COEFF, rotation);
 }
 
 void Car::turnLeft()
@@ -110,3 +112,8 @@ void Car::setRotation(float angle)
 {
   this->rotation = angle;
 }
+
+void Car::multiplyRollCoeff(float multiplier)
+{
+  this->ROLL_COEFF_MULTIPLIER = multiplier;
+};

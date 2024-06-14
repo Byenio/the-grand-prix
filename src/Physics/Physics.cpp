@@ -109,7 +109,6 @@ void Physics::decelerate(float mass, float dragCoeff, float liftCoeff, float fro
   this->acceleration = netForce / mass;
   this->velocity += this->acceleration * TICKRATE_DELTA;
   this->speed = this->speedSign * sqrt(this->velocity.x * this->velocity.x + this->velocity.y * this->velocity.y);
-  std::cout << velocity.x << " " << velocity.y << " | " << speed << std::endl;
 }
 
 void Physics::brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff,
@@ -190,4 +189,10 @@ void Physics::setPositiveSpeedSign()
 int Physics::getSpeedSign()
 {
   return this->speedSign;
+}
+
+void Physics::stop()
+{
+  this->velocity = sf::Vector2f(0, 0);
+  this->speed = 0;
 }

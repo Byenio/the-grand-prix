@@ -35,6 +35,7 @@ class Car
   const float FRONTAL_AREA = 1.4f;
 
   const float ROLL_COEFF = 0.015f;
+  float ROLL_COEFF_MULTIPLIER = 1.0f;
   const float FRICTION_COEFF = 1.5f;
 
   const float BRAKE_COEFF = 1.2f;
@@ -66,4 +67,6 @@ public:
 
   float getRotation();
   void setRotation(float angle);
+
+  void multiplyRollCoeff(float multiplier);
 };
