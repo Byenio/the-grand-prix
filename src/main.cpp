@@ -146,11 +146,13 @@ int main()
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
       {
         // turn left
+        game.getCar()->turnLeft();
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
       {
         // turn right
+        game.getCar()->turnRight();
       }
 
       if (noAccelerationKeyPressed())
@@ -165,9 +167,13 @@ int main()
       if (noSteeringKeyPressed())
       {
         // go straight
+        game.getCar()->setRotation(0);
       }
 
       game.getCar()->update();
+      std::cout << 360 - game.getCar()->getSprite()->getRotation() << std::endl;
+      std::cout << game.getCar()->getRotation() * 57.2957795f << std::endl;
+      std::cout << "===" << std::endl;
     }
 
     std::string speedString = std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));
@@ -191,10 +197,10 @@ int main()
       }
     }
 
-    if (offtrack)
-    {
-      std::cout << "OFFTRACK" << std::endl;
-    }
+    // if (offtrack)
+    // {
+    //   std::cout << "OFFTRACK" << std::endl;
+    // }
 
     for (auto &sectorLine : trackSectorLines)
     {

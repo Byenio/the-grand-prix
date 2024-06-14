@@ -26,6 +26,8 @@ class Car
 
   std::shared_ptr<Physics> physics;
 
+  float rotation = 0;
+
   const float MASS = 900.0f;
 
   const float DRAG_COEFF = 0.8f;
@@ -36,6 +38,9 @@ class Car
   const float FRICTION_COEFF = 1.5f;
 
   const float BRAKE_COEFF = 1.2f;
+
+  const float DEG_TO_RAD = M_PI / 180.0f;
+  const float RAD_TO_DEG = 180.0f / M_PI;
 
 public:
   Car(const int id, const std::string name, const std::string texturePath, const int horsepower, const float grip);
@@ -58,4 +63,7 @@ public:
   void turnRight();
 
   void update();
+
+  float getRotation();
+  void setRotation(float angle);
 };
