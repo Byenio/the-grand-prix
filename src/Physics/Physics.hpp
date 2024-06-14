@@ -30,7 +30,8 @@ public:
   void brake(float mass, float dragCoeff, float liftCoeff, float frontalArea, float rollingCoeff, float frictionCoeff,
              float brakeCoeff, float rotation);
 
-  float turnAngle(float mass, float liftCoeff, float frontalArea, float frictionCoeff, int direction);
+  float turnAngle(float mass, float liftCoeff, float frontalArea, float frictionCoeff, int direction,
+                  float wheelbaseLength, float steeringAngle);
 
   sf::Vector2f getAcceleration();
   sf::Vector2f getVelocity();

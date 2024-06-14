@@ -37,6 +37,8 @@ class Car
   const float ROLL_COEFF = 0.015f;
   float ROLL_COEFF_MULTIPLIER = 1.0f;
   const float FRICTION_COEFF = 1.5f;
+  const float WHEELBASE_LENGTH = 2.5f;
+  const float STEERING_ANGLE = 0.35f;
 
   const float BRAKE_COEFF = 1.2f;
 

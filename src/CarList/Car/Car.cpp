@@ -95,12 +95,14 @@ void Car::reverse()
 
 void Car::turnLeft()
 {
-  this->rotation = this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA, FRICTION_COEFF, -1);
+  this->rotation =
+      this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA, FRICTION_COEFF, -1, WHEELBASE_LENGTH, STEERING_ANGLE);
 }
 
 void Car::turnRight()
 {
-  this->rotation = this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA, FRICTION_COEFF, 1);
+  this->rotation =
+      this->physics->turnAngle(MASS, LIFT_COEFF, FRONTAL_AREA, FRICTION_COEFF, 1, WHEELBASE_LENGTH, STEERING_ANGLE);
 }
 
 float Car::getRotation()
