@@ -1,7 +1,7 @@
 #include "Session.hpp"
 
 Session::Session(int id, std::shared_ptr<Track> track, std::shared_ptr<Car> car)
-    : id(id), track(track), car(car), clock(){};
+    : id(id), track(track), car(car), clock(), timer(){};
 
 Session::~Session(){};
 

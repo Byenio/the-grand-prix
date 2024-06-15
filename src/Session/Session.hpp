@@ -17,6 +17,8 @@ class Session
   sf::Clock clock;
 
 public:
+  sf::Clock timer;
+
   Session(int id, std::shared_ptr<Track> track, std::shared_ptr<Car> car);
   ~Session();
 

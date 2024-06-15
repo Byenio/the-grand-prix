@@ -1,7 +1,7 @@
 1,RedBull,src/assets/cars/redbull.png,750000,1
-2,Ferrari,src/assets/cars/ferrari.png,1000,0.9
-3,Mercedes,src/assets/cars/ferrari.png,950,0.8
-4,McLaren,src/assets/cars/mclaren.png,990,1
+2,Ferrari,src/assets/cars/ferrari.png,750000,0.9
+3,Mercedes,src/assets/cars/ferrari.png,750000,0.8
+4,McLaren,src/assets/cars/mclaren.png,750000,1
 5,AstonMartin,src/assets/cars/ferrari.png,970,0.8
 6,Williams,src/assets/cars/ferrari.png,920,0.8
 7,Sauber,src/assets/cars/ferrari.png,910,0.8
