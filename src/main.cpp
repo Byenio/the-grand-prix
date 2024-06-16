@@ -14,61 +14,78 @@ struct TrackSectors
 
 int main()
 {
-  sf::RenderWindow menuWindow(sf::VideoMode(960,720),"Menu");
+  sf::RenderWindow menuWindow(sf::VideoMode(960, 720), "Menu");
   Menu menu(menuWindow.getSize().x, menuWindow.getSize().y);
 
-  while(menuWindow.isOpen()){
+  while (menuWindow.isOpen())
+  {
     sf::Event event;
-    while(menuWindow.pollEvent(event)){
-      if(event.type == sf::Event::Closed){
+    while (menuWindow.pollEvent(event))
+    {
+      if (event.type == sf::Event::Closed)
+      {
         menuWindow.close();
       }
 
-      if(event.type == sf::Event::KeyReleased){
-        if(event.key.code == sf::Keyboard::Up){
+      if (event.type == sf::Event::KeyReleased)
+      {
+        if (event.key.code == sf::Keyboard::Up)
+        {
           menu.moveUp();
           break;
         }
-        if(event.key.code == sf::Keyboard::Down){
+        if (event.key.code == sf::Keyboard::Down)
+        {
           menu.moveDown();
           break;
         }
-        if(event.key.code == sf::Keyboard::Return){
+        if (event.key.code == sf::Keyboard::Return)
+        {
 
           int x = menu.menuPressed();
-          if(x == 0){
-            sf::RenderWindow setupWindow(sf::VideoMode(960,720),"Setup");
+          if (x == 0)
+          {
+            sf::RenderWindow setupWindow(sf::VideoMode(960, 720), "Setup");
             Setup setup(setupWindow.getSize().x, setupWindow.getSize().y);
 
-            while(setupWindow.isOpen()){
+            while (setupWindow.isOpen())
+            {
               sf::Event sevent;
-              while(setupWindow.pollEvent(sevent)){
-                if(sevent.type == sf::Event::Closed){
+              while (setupWindow.pollEvent(sevent))
+              {
+                if (sevent.type == sf::Event::Closed)
+                {
                   setupWindow.close();
                 }
 
-                if(sevent.type == sf::Event::KeyReleased){
-                  if(sevent.key.code == sf::Keyboard::Up){
+                if (sevent.type == sf::Event::KeyReleased)
+                {
+                  if (sevent.key.code == sf::Keyboard::Up)
+                  {
                     setup.moveUpCar();
                     break;
                   }
-                  if(sevent.key.code == sf::Keyboard::Down){
+                  if (sevent.key.code == sf::Keyboard::Down)
+                  {
                     setup.moveDownCar();
                     break;
                   }
-                  if(sevent.key.code == sf::Keyboard::W){
+                  if (sevent.key.code == sf::Keyboard::W)
+                  {
                     setup.moveUpTrack();
                     break;
                   }
-                  if(sevent.key.code == sf::Keyboard::S){
+                  if (sevent.key.code == sf::Keyboard::S)
+                  {
                     setup.moveDownTrack();
                     break;
                   }
-                  if(sevent.key.code == sf::Keyboard::Return){
+                  if (sevent.key.code == sf::Keyboard::Return)
+                  {
                     int car = setup.getSelectedCar();
                     int track = setup.getSelectedTrack();
 
-                    sf::RenderWindow playWindow(sf::VideoMode(1600,1000), "The Grand Prix");
+                    sf::RenderWindow playWindow(sf::VideoMode(1600, 1000), "The Grand Prix");
                     sf::View view = playWindow.getDefaultView();
                     playWindow.setFramerateLimit(60);
                     int tickrate = 30;
@@ -120,7 +137,7 @@ int main()
                     std::vector<std::vector<int>> sessionLaps;
                     Game game(&playWindow);
 
-                    game.startSession(track+1, car+1);
+                    game.startSession(track + 1, car + 1);
 
                     json trackModel = game.getSession()->getTrackModel();
 
@@ -186,7 +203,7 @@ int main()
                     while (playWindow.isOpen())
                     {
                       sf::Event pevent;
-                    
+
                       while (playWindow.pollEvent(pevent))
                       {
                         if (pevent.type == sf::Event::Closed)
@@ -271,11 +288,13 @@ int main()
                         }
 
                         game.getCar()->update();
-                        // std::cout << game.getCar()->getSprite()->getPosition().x << " " << game.getCar()->getSprite()->getPosition().y
+                        // std::cout << game.getCar()->getSprite()->getPosition().x << " " <<
+                        // game.getCar()->getSprite()->getPosition().y
                         // << std::endl;
                       }
 
-                      std::string speedString = std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));
+                      std::string speedString =
+                          std::to_string(static_cast<int>(game.getCar()->getPhysics()->getSpeed() * 3.6));
                       speed.setString(speedString + " km/h");
 
                       view.setCenter(game.getCar()->getSprite()->getPosition());
@@ -306,7 +325,8 @@ int main()
                       {
                         playWindow.draw(sectorLine.shape);
 
-                        if (game.getCar()->getSprite()->getGlobalBounds().intersects(sectorLine.shape.getGlobalBounds()))
+                        if (game.getCar()->getSprite()->getGlobalBounds().intersects(
+                                sectorLine.shape.getGlobalBounds()))
                         {
                           currentSector = sectorLine.num;
                         }
@@ -395,17 +415,21 @@ int main()
               setupWindow.display();
             }
           };
-          if(x == 1){
-            sf::RenderWindow leaderboardsWindow(sf::VideoMode(900,720),"LeaderBoards");
-            while(leaderboardsWindow.isOpen()){
+          if (x == 1)
+          {
+            sf::RenderWindow leaderboardsWindow(sf::VideoMode(900, 720), "LeaderBoards");
+            while (leaderboardsWindow.isOpen())
+            {
               sf::Event levent;
-              if(levent.type == sf::Event::Closed){
+              if (levent.type == sf::Event::Closed)
+              {
                 leaderboardsWindow.close();
               }
               leaderboardsWindow.display();
             }
           }
-          if(x == 2){
+          if (x == 2)
+          {
             menuWindow.close();
           }
         }
@@ -416,8 +440,3 @@ int main()
     menuWindow.display();
   }
 }
-
-  
-
-
-
