@@ -286,10 +286,6 @@ int main()
                           game.getCar()->multiplyRollCoeff(1);
                           game.getCar()->setRotation(0);
                         }
-
-                        game.getCar()->update();
-                        std::cout << game.getCar()->getSprite()->getPosition().x << " "
-                                  << game.getCar()->getSprite()->getPosition().y << std::endl;
                       }
 
                       std::string speedString =
