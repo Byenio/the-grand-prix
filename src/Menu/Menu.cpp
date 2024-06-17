@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(float width, float height)
+Menu::Menu()
 {
   font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
   // Play
@@ -27,11 +27,11 @@ Menu::Menu(float width, float height)
 
 Menu::~Menu(){};
 
-void Menu::draw(sf::RenderWindow &window)
+void Menu::draw(sf::RenderWindow *window)
 {
   for (int i = 0; i < 3; i++)
   {
-    window.draw(menu[i]);
+    window->draw(menu[i]);
     menu[menuSelected].setFillColor(sf::Color::Blue);
   }
 }

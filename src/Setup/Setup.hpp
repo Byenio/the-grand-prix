@@ -13,8 +13,8 @@ class Setup
   int selectedCar;
 
 public:
-  Setup(float width, float height);
-  void draw(sf::RenderWindow &window);
+  Setup();
+  void draw(sf::RenderWindow *window);
   ~Setup();
 
   int getSelectedTrack();

@@ -1,74 +1,50 @@
 #include "Setup.hpp"
 
-Setup::Setup(float width, float height)
+Setup::Setup()
 {
   font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
 
   tracks[0].setFont(font);
-  tracks[0].setString("Bahrain");
+  tracks[0].setString("Japan");
   tracks[0].setFillColor(sf::Color::White);
   tracks[0].setCharacterSize(16);
   tracks[0].setPosition(200, 200);
 
   tracks[1].setFont(font);
-  tracks[1].setString("Australia");
+  tracks[1].setString("Canada");
   tracks[1].setFillColor(sf::Color::White);
   tracks[1].setCharacterSize(16);
   tracks[1].setPosition(200, 250);
 
   tracks[2].setFont(font);
-  tracks[2].setString("Japan");
+  tracks[2].setString("Spain");
   tracks[2].setFillColor(sf::Color::White);
   tracks[2].setCharacterSize(16);
   tracks[2].setPosition(200, 300);
 
   tracks[3].setFont(font);
-  tracks[3].setString("Canada");
+  tracks[3].setString("Great Britain");
   tracks[3].setFillColor(sf::Color::White);
   tracks[3].setCharacterSize(16);
   tracks[3].setPosition(200, 350);
 
   tracks[4].setFont(font);
-  tracks[4].setString("Spain");
+  tracks[4].setString("Hungary");
   tracks[4].setFillColor(sf::Color::White);
   tracks[4].setCharacterSize(16);
   tracks[4].setPosition(200, 400);
 
   tracks[5].setFont(font);
-  tracks[5].setString("Great Britain");
+  tracks[5].setString("Belgium");
   tracks[5].setFillColor(sf::Color::White);
   tracks[5].setCharacterSize(16);
   tracks[5].setPosition(200, 450);
 
   tracks[6].setFont(font);
-  tracks[6].setString("Hungary");
+  tracks[6].setString("Brazil");
   tracks[6].setFillColor(sf::Color::White);
   tracks[6].setCharacterSize(16);
   tracks[6].setPosition(200, 500);
-
-  tracks[7].setFont(font);
-  tracks[7].setString("Belgium");
-  tracks[7].setFillColor(sf::Color::White);
-  tracks[7].setCharacterSize(16);
-  tracks[7].setPosition(200, 550);
-
-  tracks[8].setFont(font);
-  tracks[8].setString("Italy");
-  tracks[8].setFillColor(sf::Color::White);
-  tracks[8].setCharacterSize(16);
-  tracks[8].setPosition(200, 600);
-
-  tracks[9].setFont(font);
-  tracks[9].setString("Brazil");
-  tracks[9].setFillColor(sf::Color::White);
-  tracks[9].setCharacterSize(16);
-  tracks[9].setPosition(200, 650);
-
-  tracks[10].setFont(font);
-  tracks[10].setString("Abu Dhabi");
-  tracks[10].setFillColor(sf::Color::White);
-  tracks[10].setCharacterSize(16);
-  tracks[10].setPosition(200, 700);
 
   cars[0].setFont(font);
   cars[0].setString("RedBull");
@@ -134,16 +110,16 @@ Setup::Setup(float width, float height)
   selectedTrack = 0;
 }
 
-void Setup::draw(sf::RenderWindow &window)
+void Setup::draw(sf::RenderWindow *window)
 {
   for (int i = 0; i < 11; i++)
   {
-    window.draw(tracks[i]);
+    window->draw(tracks[i]);
     tracks[selectedTrack].setFillColor(sf::Color::Blue);
   }
   for (int j = 0; j < 10; j++)
   {
-    window.draw(cars[j]);
+    window->draw(cars[j]);
     cars[selectedCar].setFillColor(sf::Color::Blue);
   }
 }

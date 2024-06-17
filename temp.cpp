@@ -14,9 +14,9 @@ struct TrackSectors
 
 int main()
 {
-  sf::RenderWindow *pWindow = new sf::RenderWindow(sf::VideoMode(1600, 1000), "The Grand Prix");
-  sf::View view = pWindow->getDefaultView();
-  pWindow->setFramerateLimit(60);
+  sf::RenderWindow window(sf::VideoMode(1600, 1000), "The Grand Prix");
+  sf::View view = window.getDefaultView();
+  window.setFramerateLimit(60);
   sf::Font font;
   font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
 
@@ -25,26 +25,26 @@ int main()
   bool inLeaderboard = false;
   bool inSession = false;
 
+  int tickrate = 32;
+  float oldTime = 0;
+
   int menuSelected = 0;
   int selectedTrack = 0, selectedCar = 0;
 
   if (inMenu)
   {
     Menu menu;
+    window.clear();
+    menu.draw(window);
 
-    while (pWindow->isOpen())
+    while (window.isOpen())
     {
-      pWindow->clear(sf::Color::Black);
-      menu.draw(pWindow);
-      pWindow->display();
-
       sf::Event event;
-
-      while (pWindow->pollEvent(event))
+      while (window.pollEvent(event))
       {
         if (event.type == sf::Event::Closed)
         {
-          pWindow->close();
+          window.close();
         }
 
         if (event.type == sf::Event::KeyReleased)
@@ -61,48 +61,27 @@ int main()
           }
           if (event.key.code == sf::Keyboard::Return)
           {
-            inMenu = false;
-            if (menu.menuPressed() == 0)
-            {
-              inSetup = true;
-            }
-            if (menu.menuPressed() == 1)
-            {
-              inLeaderboard = true;
-            }
-            if (menu.menuPressed() == 2)
-            {
-              pWindow->close();
-            }
-            break;
+            inSetup = true;
           }
         }
       }
-      if (inSetup)
-      {
-        break;
-      }
     }
-    pWindow->clear(sf::Color::Black);
   }
 
   if (inSetup)
   {
     Setup setup;
+    window.clear();
+    setup.draw(window);
 
-    while (pWindow->isOpen())
+    while (window.isOpen())
     {
-      pWindow->clear(sf::Color::Black);
-      setup.draw(pWindow);
-      pWindow->display();
-
       sf::Event event;
-
-      while (pWindow->pollEvent(event))
+      while (window.pollEvent(event))
       {
         if (event.type == sf::Event::Closed)
         {
-          pWindow->close();
+          window.close();
         }
 
         if (event.type == sf::Event::KeyReleased)
@@ -131,18 +110,11 @@ int main()
           {
             selectedTrack = setup.getSelectedTrack();
             selectedCar = setup.getSelectedCar();
-            inSetup = false;
             inSession = true;
-            break;
           }
         }
       }
-      if (inSession)
-      {
-        break;
-      }
     }
-    pWindow->clear(sf::Color::Black);
   }
 
   if (inSession)
@@ -153,8 +125,8 @@ int main()
     int scale = 2;
     int textureSizeX = 32;
     int textureSizeY = 64;
-    int centerX = (pWindow->getSize().x - textureSizeX * scale) / 2;
-    int centerY = (pWindow->getSize().y - textureSizeY * scale) / 2;
+    int centerX = (window.getSize().x - textureSizeX * scale) / 2;
+    int centerY = (window.getSize().y - textureSizeY * scale) / 2;
 
     sf::Font font;
     font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
@@ -194,7 +166,7 @@ int main()
     s3time.setString("S3: 0:00.000");
 
     std::vector<std::vector<int>> sessionLaps;
-    Game game(pWindow);
+    Game game(&playWindow);
 
     game.startSession(selectedTrack, selectedCar);
 
@@ -259,14 +231,14 @@ int main()
     // game.closeGame();
     // delete game;
 
-    while (pWindow->isOpen())
+    while (playWindow.isOpen())
     {
       sf::Event pevent;
 
-      while (pWindow->pollEvent(pevent))
+      while (playWindow.pollEvent(pevent))
       {
         if (pevent.type == sf::Event::Closed)
-          pWindow->close();
+          playWindow.close();
       }
 
       // session timer
@@ -354,14 +326,14 @@ int main()
 
       view.setCenter(game.getCar()->getSprite()->getPosition());
 
-      pWindow->setView(view);
-      pWindow->clear(sf::Color::White);
+      playWindow.setView(view);
+      playWindow.clear(sf::Color::White);
 
       bool offtrack = true;
 
       for (auto &segment : trackSegments)
       {
-        pWindow->draw(segment);
+        playWindow.draw(segment);
 
         if (game.getCar()->getSprite()->getGlobalBounds().intersects(segment.getGlobalBounds()))
         {
@@ -378,7 +350,7 @@ int main()
 
       for (auto &sectorLine : trackSectorLines)
       {
-        pWindow->draw(sectorLine.shape);
+        playWindow.draw(sectorLine.shape);
 
         if (game.getCar()->getSprite()->getGlobalBounds().intersects(sectorLine.shape.getGlobalBounds()))
         {
@@ -450,14 +422,14 @@ int main()
       s2time.setPosition(view.getCenter().x + 672, view.getCenter().y - 425);
       s3time.setPosition(view.getCenter().x + 672, view.getCenter().y - 410);
 
-      pWindow->draw(*game.getCar()->getSprite());
-      pWindow->draw(speed);
-      pWindow->draw(timer);
-      pWindow->draw(s1time);
-      pWindow->draw(s2time);
-      pWindow->draw(s3time);
-      pWindow->draw(lastLap);
-      pWindow->display();
+      playWindow.draw(*game.getCar()->getSprite());
+      playWindow.draw(speed);
+      playWindow.draw(timer);
+      playWindow.draw(s1time);
+      playWindow.draw(s2time);
+      playWindow.draw(s3time);
+      playWindow.draw(lastLap);
+      playWindow.display();
     }
   }
 }

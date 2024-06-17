@@ -10,9 +10,9 @@ class Menu
   sf::Font font;
 
 public:
-  Menu(float width, float height);
+  Menu();
 
-  void draw(sf::RenderWindow &window);
+  void draw(sf::RenderWindow *window);
   void moveUp();
   void moveDown();
 
