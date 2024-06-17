@@ -137,13 +137,13 @@ int main()
                     std::vector<std::vector<int>> sessionLaps;
                     Game game(&playWindow);
 
-                    game.startSession(track + 1, car + 1);
+                    game.startSession(track, car);
 
                     json trackModel = game.getSession()->getTrackModel();
 
                     std::vector<sf::RectangleShape> trackSegments;
                     std::vector<TrackSectors> trackSectorLines;
-                    float trackScale = 40;
+                    float trackScale = 10;
                     // track segments generation
                     for (auto &segment : trackModel[0]["shapes"])
                     {

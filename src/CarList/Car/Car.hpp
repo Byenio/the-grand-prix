@@ -40,7 +40,7 @@ class Car
   const float WHEELBASE_LENGTH = 2.5f;
   const float STEERING_ANGLE = 0.35f;
 
-  const float BRAKE_COEFF = 1.2f;
+  const float BRAKE_COEFF = 2.0f;
 
   const float DEG_TO_RAD = M_PI / 180.0f;
   const float RAD_TO_DEG = 180.0f / M_PI;
