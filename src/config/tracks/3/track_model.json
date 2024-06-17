@@ -1,9 +1,38 @@
 {
     "spawn": {
-        "x": 580,
-        "y": 360,
-        "angle": -90
+        "x": 420,
+        "y": 560,
+        "angle": -35
     },
+    "sectors": [
+        {
+            "num": 1,
+            "x": 410,
+            "y": 542,
+            "width": 10,
+            "height": 15,
+            "rotation": 52,
+            "isFinishLine": true
+        },
+        {
+            "num": 2,
+            "x": 140,
+            "y": 284,
+            "width": 10,
+            "height": 15,
+            "rotation": -32,
+            "isFinishLine": false
+        },
+        {
+            "num": 3,
+            "x": 520,
+            "y": 248,
+            "width": 10,
+            "height": 15,
+            "rotation": 45,
+            "isFinishLine": false
+        }
+    ],
     "shapes": [
         {
             "x": 80,
@@ -165232,17 +165261,6 @@
             "width": 1,
             "height": 1,
             "rotation": 0
-        }
-    ],
-    "sectors": [
-        {
-            "num": 1,
-            "x": 80,
-            "y": 84,
-            "width": 1,
-            "height": 1,
-            "rotation": 0,
-            "isFinishLine": true
         }
     ]
 }

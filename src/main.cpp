@@ -288,9 +288,8 @@ int main()
                         }
 
                         game.getCar()->update();
-                        // std::cout << game.getCar()->getSprite()->getPosition().x << " " <<
-                        // game.getCar()->getSprite()->getPosition().y
-                        // << std::endl;
+                        std::cout << game.getCar()->getSprite()->getPosition().x << " "
+                                  << game.getCar()->getSprite()->getPosition().y << std::endl;
                       }
 
                       std::string speedString =

@@ -4,6 +4,35 @@
         "y": 201,
         "angle": -105
     },
+    "sectors": [
+        {
+            "num": 1,
+            "x": 205,
+            "y": 200.5,
+            "width": 10,
+            "height": 8,
+            "rotation": -15,
+            "isFinishLine": true
+        },
+        {
+            "num": 2,
+            "x": 400,
+            "y": 535,
+            "width": 10,
+            "height": 8,
+            "rotation": 11,
+            "isFinishLine": false
+        },
+        {
+            "num": 3,
+            "x": 590,
+            "y": 398,
+            "width": 10,
+            "height": 8,
+            "rotation": 26,
+            "isFinishLine": false
+        }
+    ],
     "shapes": [
         {
             "x": 389,
@@ -62619,35 +62648,6 @@
             "width": 1,
             "height": 1,
             "rotation": 0
-        }
-    ],
-    "sectors": [
-        {
-            "num": 1,
-            "x": 205,
-            "y": 200.5,
-            "width": 10,
-            "height": 8,
-            "rotation": -15,
-            "isFinishLine": true
-        },
-        {
-            "num": 2,
-            "x": 400,
-            "y": 535,
-            "width": 10,
-            "height": 8,
-            "rotation": 11,
-            "isFinishLine": false
-        },
-        {
-            "num": 3,
-            "x": 590,
-            "y": 398,
-            "width": 10,
-            "height": 8,
-            "rotation": 26,
-            "isFinishLine": false
         }
     ]
 }
