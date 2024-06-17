@@ -66,6 +66,7 @@ int main()
 
 void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
 {
+  pWindow->setView(sf::View(sf::Vector2f(800,500), sf::Vector2f(1600,1000)));
   while (pWindow->isOpen() && state == GameState::MainMenu)
   {
     std::cout<<"Menu"<<std::endl;
@@ -115,6 +116,7 @@ void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
 
 void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack, int &selectedCar, Setup *setup)
 {
+  pWindow->setView(sf::View(sf::Vector2f(800,500), sf::Vector2f(1600,1000)));
   while (pWindow->isOpen() && state == GameState::Setup)
   {
     pWindow->clear();
