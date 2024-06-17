@@ -2,7 +2,6 @@
 
 #include "../../Physics/Engine/Engine.hpp"
 #include "../../Physics/Physics.hpp"
-#include "../../Physics/Tyre/Tyre.hpp"
 #include "../../utils/functions.hpp"
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -22,7 +21,6 @@ class Car
   std::shared_ptr<sf::Sprite> sprite;
 
   std::shared_ptr<Engine> engine;
-  std::vector<std::shared_ptr<Tyre>> tyres;
 
   std::shared_ptr<Physics> physics;
 
@@ -46,7 +44,7 @@ class Car
   const float RAD_TO_DEG = 180.0f / M_PI;
 
 public:
-  Car(const int id, const std::string name, const std::string texturePath, const int horsepower, const float grip);
+  Car(const int id, const std::string name, const std::string texturePath, const int horsepower);
   ~Car();
 
   int getId() const;
@@ -54,8 +52,6 @@ public:
   std::shared_ptr<sf::Sprite> getSprite() const;
 
   std::shared_ptr<Engine> getEngine() const;
-  std::vector<std::shared_ptr<Tyre>> getTyres() const;
-
   std::shared_ptr<Physics> getPhysics() const;
 
   void accelerate();

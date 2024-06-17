@@ -13,8 +13,8 @@ CarList::CarList(const std::string &fileName)
 
   while (getline(file, line))
   {
-    std::vector<std::string> row = fileLineToVector(line, 5);
-    auto pCar = std::make_shared<Car>(std::stoi(row[0]), row[1], row[2], std::stoi(row[3]), std::stof(row[4]));
+    std::vector<std::string> row = fileLineToVector(line, 4);
+    auto pCar = std::make_shared<Car>(std::stoi(row[0]), row[1], row[2], std::stoi(row[3]));
     this->cars.push_back(pCar);
   }
 

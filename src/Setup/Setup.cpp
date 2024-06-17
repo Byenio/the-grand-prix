@@ -206,4 +206,14 @@ void Setup::moveDownCar()
   }
 }
 
+int Setup::getSelectedTrack()
+{
+  return this->selectedTrack;
+}
+
+int Setup::getSelectedCar()
+{
+  return this->selectedCar;
+}
+
 Setup::~Setup(){};

@@ -3,31 +3,26 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class Setup{
-private:
-    sf::Text tracks[11];
-    sf::Text cars[10];
-    sf::Font font;
+class Setup
+{
+  sf::Text tracks[11];
+  sf::Text cars[10];
+  sf::Font font;
 
-    int selectedTrack;
-    int selectedCar;
+  int selectedTrack;
+  int selectedCar;
 
 public:
-    Setup(float width, float height);
-    void draw(sf::RenderWindow& window);
-    ~Setup();
+  Setup(float width, float height);
+  void draw(sf::RenderWindow &window);
+  ~Setup();
 
-    int getSelectedTrack(){
-        return selectedTrack;
-    }
-    int getSelectedCar(){
-        return selectedCar;
-    }
+  int getSelectedTrack();
+  int getSelectedCar();
 
-    void moveUpTrack();
-    void moveDownTrack();
+  void moveUpTrack();
+  void moveDownTrack();
 
-    void moveUpCar();
-    void moveDownCar();
+  void moveUpCar();
+  void moveDownCar();
 };
-

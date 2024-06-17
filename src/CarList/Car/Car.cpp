@@ -1,10 +1,8 @@
 #include "Car.hpp"
 
-Car::Car(const int id, const std::string name, const std::string texturePath, const int horsepower, const float grip)
+Car::Car(const int id, const std::string name, const std::string texturePath, const int horsepower)
     : id(id), name(name), texture(std::make_shared<sf::Texture>()), sprite(std::make_shared<sf::Sprite>())
 {
-  // std::cout << "Successfully created new car: [" << id << "] " <<
-  // name << std::endl;
   if (!texture->loadFromFile(texturePath))
   {
     std::cout << "Couldn't load texture from file: " << texturePath << std::endl;
@@ -16,11 +14,6 @@ Car::Car(const int id, const std::string name, const std::string texturePath, co
 
   this->physics = std::make_shared<Physics>();
   this->engine = std::make_shared<Engine>(horsepower);
-
-  this->tyres.push_back(std::make_shared<Tyre>(305, grip));
-  this->tyres.push_back(std::make_shared<Tyre>(305, grip));
-  this->tyres.push_back(std::make_shared<Tyre>(405, grip));
-  this->tyres.push_back(std::make_shared<Tyre>(405, grip));
 };
 
 Car::~Car(){};
@@ -43,11 +36,6 @@ std::shared_ptr<sf::Sprite> Car::getSprite() const
 std::shared_ptr<Engine> Car::getEngine() const
 {
   return this->engine;
-}
-
-std::vector<std::shared_ptr<Tyre>> Car::getTyres() const
-{
-  return this->tyres;
 }
 
 std::shared_ptr<Physics> Car::getPhysics() const

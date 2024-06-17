@@ -144,38 +144,30 @@ void Physics::brake(float mass, float dragCoeff, float liftCoeff, float frontalA
 float Physics::turnAngle(float mass, float liftCoeff, float frontalArea, float frictionCoeff, int direction,
                          float wheelbaseLength, float steeringAngle)
 {
-  // Calculate lift force and normal force
   float liftForce = calculateLiftForce(AIR_DENSITY, this->speed, liftCoeff, frontalArea);
   float normalForce = calculateNormalForce(mass, GRAVITY_ACCELERATION, liftForce);
 
-  // Calculate minimum turn radius using friction-based formula
   float minRadiusFriction = (mass * this->speed * this->speed) / (frictionCoeff * normalForce);
 
-  // Calculate minimum turn radius using Ackermann steering geometry formula
   float minRadiusAckermann = wheelbaseLength / tan(steeringAngle);
 
-  // Determine the weight for each formula based on speed
-  float speedThreshold = 5.0; // Speed threshold for blending formulas
+  float speedThreshold = 5.0;
   float frictionWeight = std::max(0.0f, std::min(1.0f, (this->speed - speedThreshold) / speedThreshold));
   float ackermannWeight = 1.0f - frictionWeight;
 
-  // Blend the two formulas using weighted average
   float minRadius = frictionWeight * minRadiusFriction + ackermannWeight * minRadiusAckermann;
 
-  // Check if the minimum radius is valid (non-zero)
   if (minRadius == 0)
   {
-    return 0; // Return 0 angular speed if minimum radius is 0
+    return 0;
   }
 
-  // Calculate angular speed based on blended minimum turn radius
   float angularSpeed = (this->speed / minRadius) * TICKRATE_DELTA * direction;
 
-  // Update velocity based on angular speed (simulate turning)
   this->velocity = sf::Vector2f(this->velocity.x * cos(-angularSpeed) - this->velocity.y * sin(-angularSpeed),
                                 this->velocity.x * sin(-angularSpeed) + this->velocity.y * cos(-angularSpeed));
 
-  return angularSpeed; // Return the calculated angular speed
+  return angularSpeed;
 }
 
 sf::Vector2f Physics::getAcceleration()
