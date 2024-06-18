@@ -22,7 +22,4 @@ public:
   void startSession(int trackId, int carId);
   std::shared_ptr<Session> getSession();
   std::shared_ptr<Car> getCar();
-  void closeSession();
-
-  void closeGame();
 };

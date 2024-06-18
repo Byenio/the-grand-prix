@@ -34,24 +34,3 @@ std::shared_ptr<Car> Game::getCar()
 {
   return this->pSession->getCar();
 }
-
-void Game::closeSession()
-{
-  std::ofstream file;
-  file.open("config/sessions", std::ios_base::app);
-
-  file << this->pSession->getId() << "," << this->pSession->getTrack()->getName() << ","
-       << this->pSession->getCar()->getName() << std::endl;
-
-  file.close();
-
-  std::cout << "Successfully closed session" << std::endl;
-
-  this->pSession.reset();
-}
-
-void Game::closeGame()
-{
-  this->pWindow->close();
-  std::cout << "Successfully closed game" << std::endl;
-};
