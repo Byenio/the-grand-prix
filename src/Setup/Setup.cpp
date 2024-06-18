@@ -2,7 +2,7 @@
 
 Setup::Setup()
 {
-  font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
+  font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
 
   tracks[0].setFont(font);
   tracks[0].setString("Japan");
@@ -41,10 +41,16 @@ Setup::Setup()
   tracks[5].setPosition(200, 450);
 
   tracks[6].setFont(font);
-  tracks[6].setString("Brazil");
+  tracks[6].setString("Italy");
   tracks[6].setFillColor(sf::Color::White);
   tracks[6].setCharacterSize(16);
   tracks[6].setPosition(200, 500);
+
+  tracks[7].setFont(font);
+  tracks[7].setString("Brazil");
+  tracks[7].setFillColor(sf::Color::White);
+  tracks[7].setCharacterSize(16);
+  tracks[7].setPosition(200, 550);
 
   cars[0].setFont(font);
   cars[0].setString("RedBull");

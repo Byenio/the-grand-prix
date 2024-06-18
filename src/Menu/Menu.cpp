@@ -2,7 +2,7 @@
 
 Menu::Menu()
 {
-  font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
+  font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
   // Play
   menu[0].setFont(font);
   menu[0].setString("Play");

@@ -31,7 +31,7 @@ int main()
   Setup *pSetup = new Setup;
   pWindow->setFramerateLimit(60);
   sf::Font font;
-  font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
+  font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
 
   GameState currentState = GameState::MainMenu;
   int selectedTrack = 0, selectedCar = 0;
@@ -61,15 +61,14 @@ int main()
   delete pWindow;
   delete pMenu;
   delete pSetup;
-  return 0; 
+  return 0;
 }
 
 void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
 {
-  pWindow->setView(sf::View(sf::Vector2f(800,500), sf::Vector2f(1600,1000)));
+  pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
   while (pWindow->isOpen() && state == GameState::MainMenu)
   {
-    std::cout<<"Menu"<<std::endl;
     pWindow->clear();
     menu->draw(pWindow);
     pWindow->display();
@@ -116,7 +115,7 @@ void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
 
 void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack, int &selectedCar, Setup *setup)
 {
-  pWindow->setView(sf::View(sf::Vector2f(800,500), sf::Vector2f(1600,1000)));
+  pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
   while (pWindow->isOpen() && state == GameState::Setup)
   {
     pWindow->clear();
@@ -174,10 +173,10 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   int tickrate = 32;
   float oldTime = 0;
 
-  int scale = 2;
+  int scale = 2.5;
 
   sf::Font font;
-  font.loadFromFile("src/assets/fonts/JetBrainsMono.ttf");
+  font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
 
   sf::View view = pWindow->getDefaultView();
 
@@ -224,7 +223,7 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
 
   std::vector<sf::RectangleShape> trackSegments;
   std::vector<TrackSectors> trackSectorLines;
-  float trackScale = 10;
+  float trackScale = 35;
 
   for (auto &segment : trackModel[0]["shapes"])
   {
@@ -277,7 +276,7 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   game.getCar()->getSprite()->setRotation(spawnAngle);
 
   sf::RectangleShape pauseMenu;
-  pauseMenu.setSize(sf::Vector2f(300,200));
+  pauseMenu.setSize(sf::Vector2f(300, 200));
   pauseMenu.setFillColor(sf::Color::Black);
 
   sf::Text pauseReset;
@@ -290,11 +289,10 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   pauseExit.setFont(font);
   pauseExit.setCharacterSize(42);
   pauseExit.setFillColor(sf::Color::White);
-  pauseExit.setString("Exit");
+  pauseExit.setString("Save & Exit");
 
   bool isPause = false;
   int pauseOption = 0;
-
 
   while (pWindow->isOpen() && state == GameState::Session)
   {
@@ -309,37 +307,55 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
       {
         isPause = !isPause;
       }
-      if(isPause && event.type == sf::Event::KeyReleased){
-        if(event.key.code == sf::Keyboard::Up){
-          if(pauseOption == 0){
+      if (isPause && event.type == sf::Event::KeyReleased)
+      {
+        if (event.key.code == sf::Keyboard::Up)
+        {
+          if (pauseOption == 0)
+          {
             pauseOption = 1;
             pauseExit.setFillColor(sf::Color::Blue);
             pauseReset.setFillColor(sf::Color::White);
-          }else{
+          }
+          else
+          {
             pauseOption = 0;
             pauseExit.setFillColor(sf::Color::White);
             pauseReset.setFillColor(sf::Color::Blue);
           }
         }
-        if(event.key.code == sf::Keyboard::Down){
-          if(pauseOption == 0){
+        if (event.key.code == sf::Keyboard::Down)
+        {
+          if (pauseOption == 0)
+          {
             pauseOption = 1;
             pauseExit.setFillColor(sf::Color::Blue);
             pauseReset.setFillColor(sf::Color::White);
-          }else{
+          }
+          else
+          {
             pauseOption = 0;
             pauseExit.setFillColor(sf::Color::White);
             pauseReset.setFillColor(sf::Color::Blue);
           }
         }
-        if(event.key.code == sf::Keyboard::Return){
-          if(pauseOption == 0){
+        if (event.key.code == sf::Keyboard::Return)
+        {
+          if (pauseOption == 0)
+          {
             game.getCar()->getSprite()->setPosition(spawnX * trackScale, spawnY * trackScale);
             game.getCar()->getSprite()->setRotation(spawnAngle);
             game.getCar()->getPhysics()->stop();
+            s1time.setString("S1: 0:00.000");
+            s2time.setString("S2: 0:00.000");
+            s3time.setString("S3: 0:00.000");
             currentSector = 3;
             isPause = false;
-          }else{
+          }
+          else
+          {
+            std::string path = "logs/sessions/" + std::to_string(selectedTrack);
+            updateSessionLapsToFile(sessionLaps, path);
             state = GameState::MainMenu;
             isPause = false;
             break;
@@ -479,13 +495,11 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
 
         if (!invalidated)
         {
-          std::string path = "sessions/" + generateFilename();
-          std::cout << path << std::endl;
           lastLapTime = timeMs;
           lastLap.setString("Last: " + formatTime(lastLapTime));
 
           int id = sessionLaps.size();
-          std::vector<int> lap = {id, lastLapTime, s1TimeDiff, s2TimeDiff, s3TimeDiff};
+          std::vector<int> lap = {id, selectedCar, lastLapTime, s1TimeDiff, s2TimeDiff, s3TimeDiff};
           sessionLaps.push_back(lap);
         }
 
@@ -515,7 +529,8 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
     pWindow->draw(s2time);
     pWindow->draw(s3time);
     pWindow->draw(lastLap);
-    if(isPause){
+    if (isPause)
+    {
       pWindow->draw(pauseMenu);
       pWindow->draw(pauseReset);
       pWindow->draw(pauseExit);

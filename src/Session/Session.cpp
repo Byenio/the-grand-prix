@@ -28,7 +28,7 @@ sf::Clock Session::getClock()
 json Session::getTrackModel()
 {
 
-  std::string fileName = "src/config/tracks/" + std::to_string(track->getId()) + "/track_model.json";
+  std::string fileName = "config/tracks/" + std::to_string(track->getId()) + "/track_model.json";
 
   std::fstream file;
   file.open(fileName, std::ios::in);

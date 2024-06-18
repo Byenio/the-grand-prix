@@ -2,11 +2,11 @@
 
 Game::Game(sf::RenderWindow *pWindow) : pWindow(pWindow)
 {
-  std::string trackListFile = "src/config/tracklist";
+  std::string trackListFile = "config/tracklist";
   this->pTracks = std::make_unique<TrackList>(trackListFile);
   std::cout << "Successfully initialized tracklist [entries: " << this->pTracks->size() << "]" << std::endl;
 
-  std::string carListFile = "src/config/carlist";
+  std::string carListFile = "config/carlist";
   this->pCars = std::make_unique<CarList>(carListFile);
   std::cout << "Successfully initialized carlist [entries: " << this->pCars->size() << "]" << std::endl;
 
@@ -38,7 +38,7 @@ std::shared_ptr<Car> Game::getCar()
 void Game::closeSession()
 {
   std::ofstream file;
-  file.open("src/config/sessions", std::ios_base::app);
+  file.open("config/sessions", std::ios_base::app);
 
   file << this->pSession->getId() << "," << this->pSession->getTrack()->getName() << ","
        << this->pSession->getCar()->getName() << std::endl;

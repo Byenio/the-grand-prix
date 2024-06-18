@@ -59,3 +59,38 @@ std::string formatTime(int timeMs)
 
   return ss.str();
 }
+
+void updateSessionLapsToFile(const std::vector<std::vector<int>> &sessionLaps, const std::string &filename)
+{
+  std::ofstream outFile(filename, std::ios::app);
+
+  if (!outFile)
+  {
+    std::cerr << "Error: Could not open the file for writing." << std::endl;
+    return;
+  }
+
+  for (const auto &lap : sessionLaps)
+  {
+    for (size_t i = 0; i < lap.size(); ++i)
+    {
+      outFile << lap[i];
+      if (i < lap.size() - 1)
+      {
+        outFile << ", ";
+      }
+    }
+    outFile << "\n";
+  }
+
+  outFile.close();
+
+  if (outFile.fail())
+  {
+    std::cerr << "Error: Could not write to the file properly." << std::endl;
+  }
+  else
+  {
+    std::cout << "Session laps updated successfully in " << filename << std::endl;
+  }
+}
