@@ -1,12 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 
 class Setup
 {
-  sf::Text tracks[11];
-  sf::Text cars[10];
+  std::vector<sf::Text> tracks;
+  std::vector<sf::Text> cars;
   sf::Font font;
 
   int selectedTrack;

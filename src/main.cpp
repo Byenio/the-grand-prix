@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "Menu/Menu.hpp"
 #include "Setup/Setup.hpp"
+#include "Leaderboards/Leaderboards.hpp"
 #include "utils/json.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -16,11 +17,13 @@ enum class GameState
 {
   MainMenu,
   Setup,
+  Leaderboards,
   Session,
   Exit
 };
 
 void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu);
+void handleLeaderboards(sf::RenderWindow *pWindow, GameState &state);
 void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack, int &selectedCar, Setup *setup);
 void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrack, int selectedCar);
 
@@ -45,6 +48,9 @@ int main()
       break;
     case GameState::Setup:
       handleSetup(pWindow, currentState, selectedTrack, selectedCar, pSetup);
+      break;
+    case GameState::Leaderboards:
+      handleLeaderboards(pWindow, currentState);
       break;
     case GameState::Session:
       handleSession(pWindow, currentState, selectedTrack, selectedCar);
@@ -100,7 +106,7 @@ void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
             state = GameState::Setup;
             break;
           case 1:
-            // Handle leaderboard state if needed
+            state = GameState::Leaderboards;
             break;
           case 2:
             state = GameState::Exit;
@@ -168,6 +174,44 @@ void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack
   }
 }
 
+void handleLeaderboards(sf::RenderWindow *pWindow, GameState &state){
+  pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
+  Leaderboards *pLeaderboards = new Leaderboards;
+  while(pWindow->isOpen() && state == GameState::Leaderboards){
+    pWindow->clear();
+    pLeaderboards->drawTracks(pWindow);
+    pLeaderboards->drawTimes(pWindow);
+    pWindow->display();
+    
+    sf::Event event;
+    
+    while(pWindow->pollEvent(event)){
+      if (event.type == sf::Event::Closed)
+      {
+        state = GameState::Exit;
+      }
+      if (event.type == sf::Event::KeyReleased)
+      {
+        if (event.key.code == sf::Keyboard::Right)
+        {
+          pLeaderboards->moveRight();
+          break;
+        }
+        if (event.key.code == sf::Keyboard::Left)
+        {
+          pLeaderboards->moveLeft();
+          break;
+        }
+        if (event.key.code == sf::Keyboard::Escape)
+        {
+          state = GameState::MainMenu;
+          break;
+        }
+      }
+    }
+  }
+  delete pLeaderboards;
+}
 void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrack, int selectedCar)
 {
   int tickrate = 32;
