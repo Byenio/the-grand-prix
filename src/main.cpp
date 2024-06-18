@@ -221,7 +221,7 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   int tickrate = 32;
   float oldTime = 0;
 
-  int scale = 2.5;
+  int carScale = 2.5;
 
   sf::Font font;
   font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
@@ -262,9 +262,9 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   s3time.setFillColor(sf::Color::Black);
   s3time.setString("S3: 0:00.000");
 
-  std::vector<std::vector<int>> sessionLaps;
   Game game(pWindow);
 
+  std::vector<std::vector<int>> sessionLaps;
   game.startSession(selectedTrack, selectedCar);
 
   json trackModel = game.getSession()->getTrackModel();
@@ -319,7 +319,7 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   float spawnY = trackModel[0]["spawn"]["y"];
   float spawnAngle = trackModel[0]["spawn"]["angle"];
 
-  game.getCar()->getSprite()->setScale(scale, scale);
+  game.getCar()->getSprite()->setScale(carScale, carScale);
   game.getCar()->getSprite()->setPosition(spawnX * trackScale, spawnY * trackScale);
   game.getCar()->getSprite()->setRotation(spawnAngle);
 
