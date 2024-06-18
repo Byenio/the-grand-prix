@@ -3,24 +3,25 @@
 Menu::Menu()
 {
   font.loadFromFile("assets/fonts/JetBrainsMono.ttf");
-  // Play
-  menu[0].setFont(font);
-  menu[0].setString("Play");
-  menu[0].setFillColor(sf::Color::White);
-  menu[0].setCharacterSize(70);
-  menu[0].setPosition(400, 200);
-  // Leaderboards
-  menu[1].setFont(font);
-  menu[1].setString("Leaderboards");
-  menu[1].setFillColor(sf::Color::White);
-  menu[1].setCharacterSize(70);
-  menu[1].setPosition(400, 300);
-  // Exit
-  menu[2].setFont(font);
-  menu[2].setString("Exit");
-  menu[2].setFillColor(sf::Color::White);
-  menu[2].setCharacterSize(70);
-  menu[2].setPosition(400, 400);
+
+  std::string menuStrings[] = {"Play", "Leaderboards", "Exit"};
+
+  int windowWidth = 1600;
+
+  for (int i = 0; i < 3; ++i)
+  {
+    menu[i].setFont(font);
+    menu[i].setString(menuStrings[i]);
+    menu[i].setFillColor(sf::Color::Black);
+    menu[i].setCharacterSize(70);
+  }
+
+  for (int i = 0; i < 3; ++i)
+  {
+    sf::FloatRect textRect = menu[i].getLocalBounds();
+    menu[i].setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    menu[i].setPosition(windowWidth / 2.0f, 350 + i * 100);
+  }
 
   menuSelected = 0;
 }
@@ -32,7 +33,7 @@ void Menu::draw(sf::RenderWindow *window)
   for (int i = 0; i < 3; i++)
   {
     window->draw(menu[i]);
-    menu[menuSelected].setFillColor(sf::Color::Blue);
+    menu[menuSelected].setFillColor(sf::Color::Red);
   }
 }
 
@@ -40,14 +41,14 @@ void Menu::moveUp()
 {
   if (menuSelected >= 0)
   {
-    menu[menuSelected].setFillColor(sf::Color::White);
+    menu[menuSelected].setFillColor(sf::Color::Black);
 
     menuSelected--;
     if (menuSelected == -1)
     {
       menuSelected = 2;
     }
-    menu[menuSelected].setFillColor(sf::Color::Blue);
+    menu[menuSelected].setFillColor(sf::Color::Red);
   }
 }
 
@@ -55,12 +56,12 @@ void Menu::moveDown()
 {
   if (menuSelected <= 3)
   {
-    menu[menuSelected].setFillColor(sf::Color::White);
+    menu[menuSelected].setFillColor(sf::Color::Black);
     menuSelected++;
     if (menuSelected == 3)
     {
       menuSelected = 0;
     }
-    menu[menuSelected].setFillColor(sf::Color::Blue);
+    menu[menuSelected].setFillColor(sf::Color::Red);
   }
 }

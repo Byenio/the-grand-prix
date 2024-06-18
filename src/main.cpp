@@ -1,7 +1,7 @@
 #include "Game.hpp"
+#include "Leaderboards/Leaderboards.hpp"
 #include "Menu/Menu.hpp"
 #include "Setup/Setup.hpp"
-#include "Leaderboards/Leaderboards.hpp"
 #include "utils/json.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -60,7 +60,7 @@ int main()
       break;
     }
 
-    pWindow->clear();
+    pWindow->clear(sf::Color::White);
     pWindow->display();
   }
 
@@ -75,7 +75,7 @@ void handleMainMenu(sf::RenderWindow *pWindow, GameState &state, Menu *menu)
   pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
   while (pWindow->isOpen() && state == GameState::MainMenu)
   {
-    pWindow->clear();
+    pWindow->clear(sf::Color::White);
     menu->draw(pWindow);
     pWindow->display();
 
@@ -124,7 +124,7 @@ void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack
   pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
   while (pWindow->isOpen() && state == GameState::Setup)
   {
-    pWindow->clear();
+    pWindow->clear(sf::Color::White);
     setup->draw(pWindow);
     pWindow->display();
 
@@ -174,18 +174,21 @@ void handleSetup(sf::RenderWindow *pWindow, GameState &state, int &selectedTrack
   }
 }
 
-void handleLeaderboards(sf::RenderWindow *pWindow, GameState &state){
+void handleLeaderboards(sf::RenderWindow *pWindow, GameState &state)
+{
   pWindow->setView(sf::View(sf::Vector2f(800, 500), sf::Vector2f(1600, 1000)));
   Leaderboards *pLeaderboards = new Leaderboards;
-  while(pWindow->isOpen() && state == GameState::Leaderboards){
-    pWindow->clear();
+  while (pWindow->isOpen() && state == GameState::Leaderboards)
+  {
+    pWindow->clear(sf::Color::White);
     pLeaderboards->drawTracks(pWindow);
     pLeaderboards->drawTimes(pWindow);
     pWindow->display();
-    
+
     sf::Event event;
-    
-    while(pWindow->pollEvent(event)){
+
+    while (pWindow->pollEvent(event))
+    {
       if (event.type == sf::Event::Closed)
       {
         state = GameState::Exit;
@@ -212,6 +215,7 @@ void handleLeaderboards(sf::RenderWindow *pWindow, GameState &state){
   }
   delete pLeaderboards;
 }
+
 void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrack, int selectedCar)
 {
   int tickrate = 32;
@@ -326,14 +330,16 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
   sf::Text pauseReset;
   pauseReset.setFont(font);
   pauseReset.setCharacterSize(42);
-  pauseReset.setFillColor(sf::Color::Blue);
+  pauseReset.setFillColor(sf::Color::Red);
   pauseReset.setString("Reset");
+  sf::FloatRect pauseResetBound = pauseReset.getGlobalBounds();
 
   sf::Text pauseExit;
   pauseExit.setFont(font);
   pauseExit.setCharacterSize(42);
   pauseExit.setFillColor(sf::Color::White);
   pauseExit.setString("Save & Exit");
+  sf::FloatRect pauseExitBound = pauseExit.getGlobalBounds();
 
   bool isPause = false;
   int pauseOption = 0;
@@ -358,14 +364,14 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
           if (pauseOption == 0)
           {
             pauseOption = 1;
-            pauseExit.setFillColor(sf::Color::Blue);
+            pauseExit.setFillColor(sf::Color::Red);
             pauseReset.setFillColor(sf::Color::White);
           }
           else
           {
             pauseOption = 0;
             pauseExit.setFillColor(sf::Color::White);
-            pauseReset.setFillColor(sf::Color::Blue);
+            pauseReset.setFillColor(sf::Color::Red);
           }
         }
         if (event.key.code == sf::Keyboard::Down)
@@ -373,14 +379,14 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
           if (pauseOption == 0)
           {
             pauseOption = 1;
-            pauseExit.setFillColor(sf::Color::Blue);
+            pauseExit.setFillColor(sf::Color::Red);
             pauseReset.setFillColor(sf::Color::White);
           }
           else
           {
             pauseOption = 0;
             pauseExit.setFillColor(sf::Color::White);
-            pauseReset.setFillColor(sf::Color::Blue);
+            pauseReset.setFillColor(sf::Color::Red);
           }
         }
         if (event.key.code == sf::Keyboard::Return)
@@ -557,22 +563,29 @@ void handleSession(sf::RenderWindow *pWindow, GameState &state, int selectedTrac
     timer.setString(formatTime(timeMs));
 
     speed.setPosition(view.getCenter().x + 700, view.getCenter().y + 460);
+
     timer.setPosition(view.getCenter().x - 75, view.getCenter().y - 480);
+
     lastLap.setPosition(view.getCenter().x + 520, view.getCenter().y - 480);
     s1time.setPosition(view.getCenter().x + 672, view.getCenter().y - 440);
     s2time.setPosition(view.getCenter().x + 672, view.getCenter().y - 425);
     s3time.setPosition(view.getCenter().x + 672, view.getCenter().y - 410);
-    pauseMenu.setPosition(view.getCenter().x - 100, view.getCenter().y - 100);
-    pauseReset.setPosition(view.getCenter().x - 80, view.getCenter().y - 80);
-    pauseExit.setPosition(view.getCenter().x - 80, view.getCenter().y - 40);
+
+    pauseMenu.setPosition(view.getCenter().x - 150, view.getCenter().y - 100);
+    pauseReset.setPosition(view.getCenter().x - pauseResetBound.width / 2, view.getCenter().y - 60);
+    pauseExit.setPosition(view.getCenter().x - pauseExitBound.width / 2, view.getCenter().y);
 
     pWindow->draw(*game.getCar()->getSprite());
+
     pWindow->draw(speed);
+
     pWindow->draw(timer);
+
+    pWindow->draw(lastLap);
     pWindow->draw(s1time);
     pWindow->draw(s2time);
     pWindow->draw(s3time);
-    pWindow->draw(lastLap);
+
     if (isPause)
     {
       pWindow->draw(pauseMenu);

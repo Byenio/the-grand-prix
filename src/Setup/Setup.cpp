@@ -27,6 +27,7 @@ Setup::Setup() : selectedTrack(0), selectedCar(0)
     return;
   }
 
+  int windowWidth = 1600;
   std::string line;
   int trackIndex = 0;
 
@@ -41,9 +42,13 @@ Setup::Setup() : selectedTrack(0), selectedCar(0)
     sf::Text trackText;
     trackText.setFont(font);
     trackText.setString(field);
-    trackText.setFillColor(sf::Color::White);
-    trackText.setCharacterSize(16);
-    trackText.setPosition(200, 200 + trackIndex * 50);
+    trackText.setFillColor(sf::Color::Black);
+    trackText.setCharacterSize(20);
+
+    sf::FloatRect textRect = trackText.getLocalBounds();
+    trackText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    float leftOffset = -200;
+    trackText.setPosition(windowWidth / 2.0f + leftOffset, 200 + trackIndex * 50);
 
     tracks.push_back(trackText);
 
@@ -70,9 +75,13 @@ Setup::Setup() : selectedTrack(0), selectedCar(0)
     sf::Text carText;
     carText.setFont(font);
     carText.setString(field);
-    carText.setFillColor(sf::Color::White);
+    carText.setFillColor(sf::Color::Black);
     carText.setCharacterSize(20);
-    carText.setPosition(400, 200 + carIndex * 50);
+
+    sf::FloatRect textRect = carText.getLocalBounds();
+    carText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    float rightOffset = 200;
+    carText.setPosition(windowWidth / 2.0f + rightOffset, 200 + carIndex * 50);
 
     cars.push_back(carText);
 
@@ -88,13 +97,13 @@ void Setup::draw(sf::RenderWindow *window)
   {
     window->draw(tracks[i]);
     if (i == selectedTrack)
-      tracks[selectedTrack].setFillColor(sf::Color::Blue);
+      tracks[selectedTrack].setFillColor(sf::Color::Red);
   }
   for (int j = 0; j < static_cast<int>(cars.size()); j++)
   {
     window->draw(cars[j]);
     if (j == selectedCar)
-      cars[selectedCar].setFillColor(sf::Color::Blue);
+      cars[selectedCar].setFillColor(sf::Color::Red);
   }
 }
 
@@ -102,9 +111,9 @@ void Setup::moveUpTrack()
 {
   if (selectedTrack > 0)
   {
-    tracks[selectedTrack].setFillColor(sf::Color::White);
+    tracks[selectedTrack].setFillColor(sf::Color::Black);
     selectedTrack--;
-    tracks[selectedTrack].setFillColor(sf::Color::Blue);
+    tracks[selectedTrack].setFillColor(sf::Color::Red);
   }
 }
 
@@ -112,9 +121,9 @@ void Setup::moveDownTrack()
 {
   if (selectedTrack < static_cast<int>(tracks.size() - 1))
   {
-    tracks[selectedTrack].setFillColor(sf::Color::White);
+    tracks[selectedTrack].setFillColor(sf::Color::Black);
     selectedTrack++;
-    tracks[selectedTrack].setFillColor(sf::Color::Blue);
+    tracks[selectedTrack].setFillColor(sf::Color::Red);
   }
 }
 
@@ -122,9 +131,9 @@ void Setup::moveUpCar()
 {
   if (selectedCar > 0)
   {
-    cars[selectedCar].setFillColor(sf::Color::White);
+    cars[selectedCar].setFillColor(sf::Color::Black);
     selectedCar--;
-    cars[selectedCar].setFillColor(sf::Color::Blue);
+    cars[selectedCar].setFillColor(sf::Color::Red);
   }
 }
 
@@ -132,9 +141,9 @@ void Setup::moveDownCar()
 {
   if (selectedCar < static_cast<int>(cars.size() - 1))
   {
-    cars[selectedCar].setFillColor(sf::Color::White);
+    cars[selectedCar].setFillColor(sf::Color::Black);
     selectedCar++;
-    cars[selectedCar].setFillColor(sf::Color::Blue);
+    cars[selectedCar].setFillColor(sf::Color::Red);
   }
 }
 

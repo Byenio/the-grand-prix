@@ -53,7 +53,7 @@ void Leaderboards::setTracks()
       sf::Text trackText;
       trackText.setFont(font);
       trackText.setString(field);
-      trackText.setFillColor(sf::Color::White);
+      trackText.setFillColor(sf::Color::Black);
       trackText.setCharacterSize(20);
       trackText.setPosition(width, 50);
 
@@ -94,7 +94,7 @@ void Leaderboards::drawTracks(sf::RenderWindow *window)
   {
     window->draw(tracks[i]);
   }
-  tracks[trackSelected].setFillColor(sf::Color::Blue);
+  tracks[trackSelected].setFillColor(sf::Color::Red);
 }
 
 int Leaderboards::drawTimes(sf::RenderWindow *window)
@@ -105,35 +105,43 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
   sf::Text s1Time;
   sf::Text s2Time;
   sf::Text s3Time;
+  sf::Text carText;
 
   lapTime.setString("Lap time");
   lapTime.setCharacterSize(20);
   lapTime.setFont(font);
-  lapTime.setFillColor(sf::Color::White);
+  lapTime.setFillColor(sf::Color::Black);
   lapTime.setPosition(400, 260);
 
   s1Time.setString("S1 time");
   s1Time.setCharacterSize(20);
   s1Time.setFont(font);
-  s1Time.setFillColor(sf::Color::White);
+  s1Time.setFillColor(sf::Color::Black);
   s1Time.setPosition(600, 260);
 
   s2Time.setString("S2 time");
   s2Time.setCharacterSize(20);
   s2Time.setFont(font);
-  s2Time.setFillColor(sf::Color::White);
+  s2Time.setFillColor(sf::Color::Black);
   s2Time.setPosition(800, 260);
 
   s3Time.setString("S3 time");
   s3Time.setCharacterSize(20);
   s3Time.setFont(font);
-  s3Time.setFillColor(sf::Color::White);
+  s3Time.setFillColor(sf::Color::Black);
   s3Time.setPosition(1000, 260);
+
+  carText.setString("Car");
+  carText.setCharacterSize(20);
+  carText.setFont(font);
+  carText.setFillColor(sf::Color::Black);
+  carText.setPosition(1200, 260);
 
   window->draw(lapTime);
   window->draw(s1Time);
   window->draw(s2Time);
   window->draw(s3Time);
+  window->draw(carText);
 
   switch (trackSelected)
   {
@@ -168,12 +176,11 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
     text.setString("No lap time set");
     text.setCharacterSize(20);
     text.setFont(font);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color::Black);
     text.setPosition(400, 300);
     window->draw(text);
     return 0;
   }
-
 
   std::fstream file;
 
@@ -187,19 +194,21 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
       text.setString(formatTime(stoi(temp[i][j])));
       text.setCharacterSize(20);
       text.setFont(font);
-      text.setFillColor(sf::Color::White);
+      text.setFillColor(sf::Color::Black);
       text.setPosition(width, height);
       window->draw(text);
       width += 200;
     }
     std::string line;
     file.open("config/carlist");
-    while(getline(file,line)){
-      if(stoi(temp[i][1]) == stoi(fileLineToVector(line,4)[0])){
+    while (getline(file, line))
+    {
+      if (stoi(temp[i][1]) == stoi(fileLineToVector(line, 4)[0]))
+      {
         sf::Texture carTexture;
-        carTexture.loadFromFile(fileLineToVector(line,4)[2]);
+        carTexture.loadFromFile(fileLineToVector(line, 4)[2]);
         sf::Sprite car(carTexture);
-        car.setPosition(width,height);
+        car.setPosition(width + 50, height);
         car.setRotation(90);
         window->draw(car);
       }
@@ -214,13 +223,13 @@ void Leaderboards::moveRight()
 {
   if (trackSelected <= static_cast<int>(tracks.size()))
   {
-    tracks[trackSelected].setFillColor(sf::Color::White);
+    tracks[trackSelected].setFillColor(sf::Color::Black);
     trackSelected++;
     if (trackSelected == static_cast<int>(tracks.size()))
     {
       trackSelected = 0;
     }
-    tracks[trackSelected].setFillColor(sf::Color::Blue);
+    tracks[trackSelected].setFillColor(sf::Color::Red);
   }
 }
 
@@ -228,14 +237,14 @@ void Leaderboards::moveLeft()
 {
   if (trackSelected >= 0)
   {
-    tracks[trackSelected].setFillColor(sf::Color::White);
+    tracks[trackSelected].setFillColor(sf::Color::Black);
 
     trackSelected--;
     if (trackSelected == -1)
     {
       trackSelected = tracks.size() - 1;
     }
-    tracks[trackSelected].setFillColor(sf::Color::Blue);
+    tracks[trackSelected].setFillColor(sf::Color::Red);
   }
 }
 
