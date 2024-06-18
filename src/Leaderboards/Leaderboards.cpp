@@ -100,6 +100,41 @@ void Leaderboards::drawTracks(sf::RenderWindow *window)
 int Leaderboards::drawTimes(sf::RenderWindow *window)
 {
   std::vector<std::vector<std::string>> temp;
+
+  sf::Text lapTime;
+  sf::Text s1Time;
+  sf::Text s2Time;
+  sf::Text s3Time;
+
+  lapTime.setString("Lap time");
+  lapTime.setCharacterSize(20);
+  lapTime.setFont(font);
+  lapTime.setFillColor(sf::Color::White);
+  lapTime.setPosition(400, 260);
+
+  s1Time.setString("S1 time");
+  s1Time.setCharacterSize(20);
+  s1Time.setFont(font);
+  s1Time.setFillColor(sf::Color::White);
+  s1Time.setPosition(600, 260);
+
+  s2Time.setString("S2 time");
+  s2Time.setCharacterSize(20);
+  s2Time.setFont(font);
+  s2Time.setFillColor(sf::Color::White);
+  s2Time.setPosition(800, 260);
+
+  s3Time.setString("S3 time");
+  s3Time.setCharacterSize(20);
+  s3Time.setFont(font);
+  s3Time.setFillColor(sf::Color::White);
+  s3Time.setPosition(1000, 260);
+
+  window->draw(lapTime);
+  window->draw(s1Time);
+  window->draw(s2Time);
+  window->draw(s3Time);
+
   switch (trackSelected)
   {
   case 0:
@@ -130,7 +165,7 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
   if (static_cast<int>(temp.size()) == 0)
   {
     sf::Text text;
-    text.setString("Brak czasow");
+    text.setString("No lap time set");
     text.setCharacterSize(20);
     text.setFont(font);
     text.setFillColor(sf::Color::White);
