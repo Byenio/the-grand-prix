@@ -173,6 +173,10 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
     window->draw(text);
     return 0;
   }
+
+
+  std::fstream file;
+
   int height = 300;
   for (int i = 0; i < static_cast<int>(temp.size()) && i < 10; i++)
   {
@@ -188,6 +192,19 @@ int Leaderboards::drawTimes(sf::RenderWindow *window)
       window->draw(text);
       width += 200;
     }
+    std::string line;
+    file.open("config/carlist");
+    while(getline(file,line)){
+      if(stoi(temp[i][1]) == stoi(fileLineToVector(line,4)[0])){
+        sf::Texture carTexture;
+        carTexture.loadFromFile(fileLineToVector(line,4)[2]);
+        sf::Sprite car(carTexture);
+        car.setPosition(width,height);
+        car.setRotation(90);
+        window->draw(car);
+      }
+    }
+    file.close();
     height += 40;
   }
   return 0;
